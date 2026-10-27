@@ -121,9 +121,32 @@ async function loadVehicles() {
 
   try {
     const snapshot = await getDocs(collection(db, "vehicles"));
+ status.innerHTML =
+  "Firebase Connected ✅<br>कुल गाड़ियाँ: " + snapshot.size;
 
-    status.textContent =
-      "Firebase Connected ✅ | Vehicles: " + snapshot.size;
+snapshot.forEach((doc) => {
+  const vehicle = doc.data();
+
+  const card = document.createElement("div");
+  card.style.cssText =
+    "padding:15px;margin:10px;border:1px solid #ddd;border-radius:10px;";
+
+  const title = document.createElement("h3");
+  title.textContent = vehicle.vehicleName || "गाड़ी";
+
+  const type = document.createElement("p");
+  type.textContent = "प्रकार: " + (vehicle.vehicleType || "N/A");
+
+  const city = document.createElement("p");
+  city.textContent = "शहर: " + (vehicle.city || vehicle.City || "N/A");
+
+  const price = document.createElement("p");
+  price.textContent = "किराया: ₹" + (vehicle.pricePerKm ?? 0) + "/km";
+
+  card.append(title, type, city, price);
+  status.appendChild(card);
+});
+  
 
   } catch (error) {
     console.error(error);
