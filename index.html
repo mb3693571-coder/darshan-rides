@@ -154,7 +154,51 @@ snapshot.forEach((doc) => {
       "Firebase connection failed: " + error.code;
   }
 }
+window.searchVehicles = async function () {
+  const city = prompt("किस शहर में गाड़ी चाहिए? जैसे Jaipur");
 
+  if (!city || !city.trim()) return;
+
+  const status = document.getElementById("firebaseStatus");
+  status.textContent = "गाड़ियाँ खोजी जा रही हैं...";
+
+  try {
+    const snapshot = await getDocs(collection(db, "vehicles"));
+    const searchCity = city.trim().toLowerCase();
+    let found = 0;
+
+    status.textContent = "";
+
+    snapshot.forEach((doc) => {
+      const vehicle = doc.data();
+      const vehicleCity = String(vehicle.city || vehicle.City || "");
+
+      if (vehicleCity.trim().toLowerCase() === searchCity) {
+        found++;
+
+        const card = document.createElement("div");
+        card.style.cssText =
+          "padding:15px;margin:10px;border:1px solid #ddd;border-radius:10px;";
+
+        const name = document.createElement("h3");
+        name.textContent = vehicle.vehicleName || "गाड़ी";
+
+        const details = document.createElement("p");
+        details.textContent =
+          vehicleCity + " | ₹" + (vehicle.pricePerKm ?? 0) + "/km";
+
+        card.append(name, details);
+        status.appendChild(card);
+      }
+    });
+
+    if (found === 0) {
+      status.textContent = "इस शहर में कोई गाड़ी नहीं मिली।";
+    }
+  } catch (error) {
+    status.textContent = "Error: " + error.code;
+  }
+};
 loadVehicles();
 </script>
 
