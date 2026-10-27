@@ -154,7 +154,32 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+onAuthStateChanged(auth, (user) => {
+  const account = document.getElementById("myAccount");
+  const email = document.getElementById("userEmail");
 
+  if (!account || !email) return;
+
+  if (user) {
+    account.style.display = "block";
+    email.textContent = "Email: " + user.email;
+  } else {
+    account.style.display = "none";
+    email.textContent = "";
+  }
+});
+
+window.logoutCustomer = async function () {
+  try {
+    await signOut(auth);
+
+    document.getElementById("authStatus").textContent =
+      "✅ Logout सफल!";
+  } catch (error) {
+    document.getElementById("authStatus").textContent =
+      "❌ Logout Error: " + error.code;
+  }
+};
 window.registerCustomer = async function () {
   const email = document.getElementById("customerEmail").value.trim();
   const password = document.getElementById("customerPassword").value;
