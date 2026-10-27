@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Darshan Rides - Vehicle Booking</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f7fb;
+  text-align: center;
+}
+header {
+  background: #ff8c00;
+  color: white;
+  padding: 25px 15px;
+}
+h1 { margin: 5px 0; }
+nav {
+  background: #173b73;
+  color: white;
+  padding: 14px;
+}
+.hero { padding: 25px 15px; }
+input, select, button {
+  padding: 13px;
+  margin: 7px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  max-width: 90%;
+}
+button {
+  background: #ff8c00;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 15px;
+}
+.card {
+  background: white;
+  padding: 22px 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #ddd;
+}
+.card span { font-size: 38px; }
+footer {
+  background: #173b73;
+  color: white;
+  padding: 20px;
+  margin-top: 25px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🙏 DARSHAN RIDES 🚗</h1>
+  <p>आपकी यात्रा, हमारी जिम्मेदारी</p>
+</header>
+
+<nav>Home | Book Ride | Owner | Login</nav>
+
+<section class="hero">
+  <h2>अपनी पसंद की गाड़ी बुक करें</h2>
+  <p>Car, Bike, Taxi, Tractor, Truck & Bus</p>
+
+  <input type="text" placeholder="Pickup Location">
+  <input type="text" placeholder="Drop Location">
+
+  <br>
+  <button onclick="alert('Booking सुविधा जल्द आएगी')">
+    Search Vehicles
+  </button>
+</section>
+
+<h2>🚘 हमारी गाड़ियाँ</h2>
+
+<div class="grid">
+  <div class="card"><span>🚗</span><h3>Car</h3></div>
+  <div class="card"><span>🏍️</span><h3>Bike</h3></div>
+  <div class="card"><span>🚕</span><h3>Taxi</h3></div>
+  <div class="card"><span>🚜</span><h3>Tractor</h3></div>
+  <div class="card"><span>🚚</span><h3>Truck</h3></div>
+  <div class="card"><span>🛻</span><h3>Pickup</h3></div>
+  <div class="card"><span>🚌</span><h3>Bus</h3></div>
+</div>
+
+<footer>
+  <h3>Darshan Rides</h3>
+  <p>Vehicle Booking Platform</p>
+  <p>Made in India 🇮🇳</p>
+</footer>
+
+</body>
+</html>
