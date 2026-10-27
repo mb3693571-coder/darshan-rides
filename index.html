@@ -332,6 +332,49 @@ window.searchVehicles = async function () {
     status.textContent = "Error: " + error.code;
   }
 };
+  window.registerVehicle = async function () {
+  const status = document.getElementById("ownerStatus");
+  const user = auth.currentUser;
+
+  if (!user) {
+    status.textContent = "❌ पहले Login करें।";
+    return;
+  }
+
+  const ownerName = document.getElementById("ownerName").value.trim();
+  const city = document.getElementById("ownerCity").value.trim();
+  const vehicleType = document.getElementById("ownerVehicleType").value;
+  const vehicleName = document.getElementById("ownerVehicleName").value.trim();
+  const pricePerKm = Number(document.getElementById("ownerPrice").value);
+
+  if (!ownerName || !city || !vehicleType || !vehicleName ||
+      !Number.isFinite(pricePerKm) || pricePerKm <= 0 ||
+      pricePerKm > 100000 ||
+      ownerName.length > 100 || city.length > 100 ||
+      vehicleName.length > 100) {
+    status.textContent = "❌ सभी जानकारी सही भरें।";
+    return;
+  }
+
+  status.textContent = "आवेदन जमा हो रहा है...";
+
+  try {
+    await addDoc(collection(db, "vehicleRequests"), {
+      ownerId: user.uid,
+      ownerName: ownerName,
+      city: city,
+      vehicleType: vehicleType,
+      vehicleName: vehicleName,
+      pricePerKm: pricePerKm,
+      status: "pending"
+    });
+
+    status.textContent = "✅ आवेदन जमा हो गया! एडमिन की मंजूरी बाकी है।";
+  } catch (error) {
+    console.error(error);
+    status.textContent = "❌ Error: " + error.code;
+  }
+};
 loadVehicles();
 </script>
 
