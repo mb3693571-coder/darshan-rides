@@ -129,7 +129,11 @@ import { initializeApp } from
 
 import { getFirestore, collection, getDocs } from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 const firebaseConfig = {
   apiKey: "AIzaSyB_Uvk4_RAlASmsbXD3p27-c3BI375S4-Y",
   authDomain: "darshan-rides.firebaseapp.com",
