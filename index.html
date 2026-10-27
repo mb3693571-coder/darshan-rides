@@ -66,6 +66,44 @@ footer {
 </header>
 
 <nav>Home | Book Ride | Owner | Login</nav>
+  <section class="hero" id="ownerRegistration">
+  <h2>🚗 गाड़ी मालिक रजिस्ट्रेशन</h2>
+  <p>Darshan Rides पर अपनी गाड़ी जोड़ें</p>
+
+  <input type="text" id="ownerName"
+    placeholder="मालिक का नाम">
+
+  <input type="text" id="ownerCity"
+    placeholder="शहर का नाम">
+
+  <select id="ownerVehicleType">
+    <option value="">गाड़ी चुनें</option>
+    <option value="Car">🚗 Car</option>
+    <option value="Bike">🏍️ Bike</option>
+    <option value="Taxi">🚕 Taxi</option>
+    <option value="Tractor">🚜 Tractor</option>
+    <option value="Truck">🚚 Truck</option>
+    <option value="Pickup">🛻 Pickup</option>
+    <option value="Bus">🚌 Bus</option>
+  </select>
+
+  <input type="text" id="ownerVehicleName"
+    placeholder="गाड़ी का नाम / मॉडल">
+
+  <input type="number" id="ownerPrice"
+    placeholder="किराया ₹ प्रति किलोमीटर"
+    min="1">
+
+  <br>
+
+  <button type="button" disabled>
+    🚗 गाड़ी रजिस्टर करें (जल्द शुरू होगा)
+  </button>
+
+  <p id="ownerStatus">
+    रजिस्ट्रेशन सुविधा तैयार की जा रही है।
+  </p>
+  </section>
 <section id="customerAuth" class="hero">
   <h2>👤 ग्राहक रजिस्ट्रेशन / लॉगिन</h2>
 
