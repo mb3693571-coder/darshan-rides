@@ -141,7 +141,33 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
+window.registerCustomer = async function () {
+  const email = document.getElementById("customerEmail").value.trim();
+  const password = document.getElementById("customerPassword").value;
+  const status = document.getElementById("authStatus");
+
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+    status.textContent = "✅ आपका अकाउंट बन गया!";
+  } catch (error) {
+    status.textContent = "❌ " + error.message;
+  }
+};
+
+window.loginCustomer = async function () {
+  const email = document.getElementById("customerEmail").value.trim();
+  const password = document.getElementById("customerPassword").value;
+  const status = document.getElementById("authStatus");
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    status.textContent = "✅ Login सफल!";
+  } catch (error) {
+    status.textContent = "❌ " + error.message;
+  }
+};
 async function loadVehicles() {
   const status = document.getElementById("firebaseStatus");
 
