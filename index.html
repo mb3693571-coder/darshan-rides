@@ -66,7 +66,33 @@ footer {
 </header>
 
 <nav>Home | Book Ride | Owner | Login</nav>
+<section id="customerAuth" class="hero">
+  <h2>👤 ग्राहक रजिस्ट्रेशन / लॉगिन</h2>
 
+  <input
+    type="email"
+    id="customerEmail"
+    placeholder="अपना Email लिखें"
+  >
+
+  <input
+    type="password"
+    id="customerPassword"
+    placeholder="Password (कम से कम 6 अक्षर)"
+  >
+
+  <br>
+
+  <button onclick="registerCustomer()">
+    नया अकाउंट बनाएँ
+  </button>
+
+  <button onclick="loginCustomer()">
+    Login करें
+  </button>
+
+  <p id="authStatus"></p>
+</section>
 <section class="hero">
   <h2>अपनी पसंद की गाड़ी बुक करें</h2>
   <p>Car, Bike, Taxi, Tractor, Truck & Bus</p>
