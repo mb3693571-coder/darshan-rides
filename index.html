@@ -97,6 +97,44 @@ footer {
   <p>Vehicle Booking Platform</p>
   <p>Made in India 🇮🇳</p>
 </footer>
+<script type="module">
+import { initializeApp } from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
+import { getFirestore, collection, getDocs } from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB_Uvk4_RAlASmsbXD3p27-c3BI375S4-Y",
+  authDomain: "darshan-rides.firebaseapp.com",
+  projectId: "darshan-rides",
+  storageBucket: "darshan-rides.firebasestorage.app",
+  messagingSenderId: "474963567773",
+  appId: "1:474963567773:web:be0eb8f210b803c121e074"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadVehicles() {
+  const status = document.getElementById("firebaseStatus");
+
+  try {
+    const snapshot = await getDocs(collection(db, "vehicles"));
+
+    status.textContent =
+      "Firebase Connected ✅ | Vehicles: " + snapshot.size;
+
+  } catch (error) {
+    console.error(error);
+    status.textContent =
+      "Firebase connection failed: " + error.code;
+  }
+}
+
+loadVehicles();
+</script>
+
+<p id="firebaseStatus">Connecting to Firebase...</p>
 </body>
 </html>
