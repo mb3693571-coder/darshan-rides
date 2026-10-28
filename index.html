@@ -218,7 +218,9 @@ window.addEventListener("unhandledrejection", function(event) {
   }
   </script>
 <script type="module">
-  
+  document.addEventListener("DOMContentLoaded", function () {
+  loadVehicles();
+});
   
 import { initializeApp } from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
