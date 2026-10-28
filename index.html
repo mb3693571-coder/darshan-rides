@@ -384,7 +384,8 @@ window.searchVehicles = async function () {
   }
 };
   // Admin के लिए आवेदन दिखाना
-document.getElementById("loadRequestsBtn")
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("loadRequestsBtn")
   .addEventListener("click", async function () {
 
     const box = document.getElementById("adminRequests");
