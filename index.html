@@ -291,19 +291,45 @@ bookBtn.addEventListener("click", () => {
   const user = auth.currentUser;
 
   if (!user) {
+    bookBtn.addEventListener("click", async () => {
+  const user = auth.currentUser;
+
+  if (!user) {
     alert("❌ बुकिंग के लिए पहले Login करें।");
     return;
   }
 
-  alert(
-    "🚗 गाड़ी: " + (vehicle.vehicleName || "गाड़ी") +
-    "\n📍 शहर: " + (vehicle.city || "N/A") +
-    "\n\nबुकिंग फॉर्म अगले चरण में जोड़ा जाएगा।"
-  );
-});
+  const pickup = prompt("📍 Pickup Location लिखें:");
+  if (!pickup || !pickup.trim()) return;
 
-card.append(title, type, city, price, bookBtn);
-status.appendChild(card);
+  const drop = prompt("📍 Drop Location लिखें:");
+  if (!drop || !drop.trim()) return;
+
+  if (pickup.trim().length > 200 || drop.trim().length > 200) {
+    alert("❌ Location अधिकतम 200 अक्षरों की हो सकती है।");
+    return;
+  }
+
+  bookBtn.disabled = true;
+  bookBtn.textContent = "Booking हो रही है...";
+
+  try {
+    await addDoc(collection(db, "bookings"), {
+      customerId: user.uid,
+      vehicleId: doc.id,
+      vehicleName: vehicle.vehicleName || "गाड़ी",
+      pickup: pickup.trim(),
+      drop: drop.trim(),
+      status: "pending"
+    });
+
+    alert("✅ आपकी Booking सफलतापूर्वक जमा हो गई!");
+  } catch (error) {
+    alert("❌ Booking Error: " + error.code);
+  } finally {
+    bookBtn.disabled = false;
+    bookBtn.textContent = "📅 Book Now";
+  }
 });
   
 
