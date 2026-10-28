@@ -402,9 +402,23 @@ window.searchVehicles = async function () {
 
   if (!city || !city.trim()) return;
 
-  const status = document.getElementById("firebaseStatus");
+ // 🔍 गाड़ियाँ खोजने का फ़ंक्शन
+window.searchVehicles = async function () {
+  const city = prompt("किस शहर में गाड़ी चाहिए? जैसे Jaipur");
+
+  if (!city || !city.trim()) return;
 
   const status = document.getElementById("firebaseStatus");
+  status.textContent = "गाड़ियाँ खोजी जा रही हैं...";
+
+  try {
+    const snapshot = await getDocs(collection(db, "vehicles"));
+    const searchCity = city.trim().toLowerCase();
+    let found = 0;
+
+    status.textContent = "";
+
+  
   status.textContent = "गाड़ियाँ खोजी जा रही हैं...";
 
   try {
