@@ -184,6 +184,25 @@ moduleTest.textContent = `
 `;
 document.head.appendChild(moduleTest);
   </script>
+  <script>
+window.addEventListener("error", function(event) {
+  const box = document.getElementById("firebaseStatus");
+
+  if (box) {
+    box.textContent =
+      "❌ JavaScript Error: " + event.message;
+  }
+});
+
+window.addEventListener("unhandledrejection", function(event) {
+  const box = document.getElementById("firebaseStatus");
+
+  if (box) {
+    box.textContent =
+      "❌ Promise Error: " + event.reason;
+  }
+});
+  </script>
   <script type="module">
   const status = document.getElementById("firebaseStatus");
 
