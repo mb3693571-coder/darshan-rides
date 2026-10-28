@@ -345,7 +345,19 @@ async function loadVehicles() {
       "Firebase connection failed: " + error.code;
   }
 }
-  
+  } catch (error) {
+    console.error(error);
+    status.textContent =
+      "Firebase connection failed: " + error.code;
+  }
+}
+
+// ✅ यह लाइन जोड़ें
+window.searchVehicles = async function () {
+
+  const city = prompt("किस शहर में गाड़ी चाहिए? जैसे Jaipur");
+
+  if (!city || !city.trim()) return;
   const city = prompt("किस शहर में गाड़ी चाहिए? जैसे Jaipur");
 
   if (!city || !city.trim()) return;
