@@ -398,13 +398,11 @@ async function loadVehicles() {
 
 // ✅ यह लाइन जोड़ें
 window.searchVehicles = async function () {
-
   const city = prompt("किस शहर में गाड़ी चाहिए? जैसे Jaipur");
 
   if (!city || !city.trim()) return;
-  const city = prompt("किस शहर में गाड़ी चाहिए? जैसे Jaipur");
 
-  if (!city || !city.trim()) return;
+  const status = document.getElementById("firebaseStatus");
 
   const status = document.getElementById("firebaseStatus");
   status.textContent = "गाड़ियाँ खोजी जा रही हैं...";
