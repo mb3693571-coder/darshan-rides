@@ -383,6 +383,86 @@ window.searchVehicles = async function () {
     status.textContent = "❌ Error: " + error.code;
   }
 };
+  // Admin के लिए आवेदन दिखाना
+document.getElementById("loadRequestsBtn")
+  .addEventListener("click", async function () {
+
+    const box = document.getElementById("adminRequests");
+    const user = auth.currentUser;
+
+    if (!user || user.uid !== "YOUR_ADMIN_UID") {
+      box.textContent = "❌ केवल Admin आवेदन देख सकता है।";
+      return;
+    }
+
+    box.textContent = "आवेदन लोड हो रहे हैं...";
+
+    try {
+      const snapshot = await getDocs(
+        collection(db, "vehicleRequests")
+      );
+
+      box.replaceChildren();
+
+      if (snapshot.empty) {
+        box.textContent = "अभी कोई आवेदन नहीं है।";
+        return;
+      }
+
+      snapshot.forEach((item) => {
+        const data = item.data();
+
+        const card = document.createElement("div");
+        card.style.cssText =
+          "border:1px solid #ccc;padding:12px;margin:10px 0;";
+
+        const details = document.createElement("p");
+        details.textContent =
+          `${data.ownerName} | ${data.city} | ` +
+          `${data.vehicleType} | ${data.vehicleName} | ` +
+          `₹${data.pricePerKm}/km | ${data.status}`;
+
+        card.appendChild(details);
+
+        if (data.status === "pending") {
+          ["approved", "rejected"].forEach((decision) => {
+            const button = document.createElement("button");
+
+            button.textContent =
+              decision === "approved" ? "✅ Approve" : "❌ Reject";
+
+            button.addEventListener("click", async () => {
+              button.disabled = true;
+
+              try {
+                await updateDoc(
+                  doc(db, "vehicleRequests", item.id),
+                  { status: decision }
+                );
+
+                details.textContent +=
+                  ` | नया Status: ${decision}`;
+
+                card.querySelectorAll("button")
+                  .forEach((btn) => btn.remove());
+
+              } catch (error) {
+                alert("❌ Error: " + error.code);
+                button.disabled = false;
+              }
+            });
+
+            card.appendChild(button);
+          });
+        }
+
+        box.appendChild(card);
+      });
+
+    } catch (error) {
+      box.textContent = "❌ Error: " + error.code;
+    }
+  });
 loadVehicles();
 </script>
 <section id="adminPanel" style="display:none; padding:20px; margin:15px; border:2px solid orange; border-radius:12px;">
