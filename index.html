@@ -213,6 +213,12 @@ onAuthStateChanged(auth, (user) => {
     account.style.display = "none";
     email.textContent = "";
   }
+  const adminPanel = document.getElementById("adminPanel");
+
+  if (adminPanel) {
+    adminPanel.style.display =
+      user && user.uid === "YOUR_ADMIN_UID" ? "block" : "none";
+  }
 });
 
 window.logoutCustomer = async function () {
