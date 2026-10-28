@@ -217,7 +217,7 @@ onAuthStateChanged(auth, (user) => {
 
   if (adminPanel) {
     adminPanel.style.display =
-      user && user.uid === "YOUR_ADMIN_UID" ? "block" : "none";
+      user && user.uid === "C0RaEMGzijTWtQtPdjWh5bbUhZf2" ? "block" : "none";
   }
 });
 
@@ -390,7 +390,8 @@ document.getElementById("loadRequestsBtn")
     const box = document.getElementById("adminRequests");
     const user = auth.currentUser;
 
-    if (!user || user.uid !== "C0RaEMGzijTWtQtPdjWh5bbUhZf2" {
+    if (!user || user.uid !== 
+        "C0RaEMGzijTWtQtPdjWh5bbUhZf2" {
       box.textContent = "❌ केवल Admin आवेदन देख सकता है।";
       return;
     }
