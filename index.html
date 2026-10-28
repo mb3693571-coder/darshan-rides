@@ -262,88 +262,89 @@ async function loadVehicles() {
 
   try {
     const snapshot = await getDocs(collection(db, "vehicles"));
- status.innerHTML =
-  "Firebase Connected ✅<br>कुल गाड़ियाँ: " + snapshot.size;
 
-snapshot.forEach((doc) => {
-  const vehicle = doc.data();
+    status.innerHTML =
+      "Firebase Connected ✅<br>कुल गाड़ियाँ: " + snapshot.size;
 
-  const card = document.createElement("div");
-  card.style.cssText =
-    "padding:15px;margin:10px;border:1px solid #ddd;border-radius:10px;";
+    snapshot.forEach((vehicleDoc) => {
+      const vehicle = vehicleDoc.data();
 
-  const title = document.createElement("h3");
-  title.textContent = vehicle.vehicleName || "गाड़ी";
+      const card = document.createElement("div");
+      card.style.cssText =
+        "padding:15px;margin:10px;border:1px solid #ddd;border-radius:10px;";
 
-  const type = document.createElement("p");
-  type.textContent = "प्रकार: " + (vehicle.vehicleType || "N/A");
+      const title = document.createElement("h3");
+      title.textContent = vehicle.vehicleName || "गाड़ी";
 
-  const city = document.createElement("p");
-  city.textContent = "शहर: " + (vehicle.city || vehicle.City || "N/A");
+      const type = document.createElement("p");
+      type.textContent = "प्रकार: " + (vehicle.vehicleType || "N/A");
 
-  const price = document.createElement("p");
-  price.textContent = "किराया: ₹" + (vehicle.pricePerKm ?? 0) + "/km";
+      const city = document.createElement("p");
+      city.textContent = "शहर: " + (vehicle.city || "N/A");
 
-  const bookBtn = document.createElement("button");
-bookBtn.textContent = "📅 Book Now";
+      const price = document.createElement("p");
+      price.textContent =
+        "किराया: ₹" + (vehicle.pricePerKm ?? 0) + "/km";
 
-bookBtn.addEventListener("click", () => {
-  const user = auth.currentUser;
+      const bookBtn = document.createElement("button");
+      bookBtn.textContent = "📅 Book Now";
 
-  if (!user) {
-    bookBtn.addEventListener("click", async () => {
-  const user = auth.currentUser;
+      bookBtn.addEventListener("click", async () => {
+        const user = auth.currentUser;
 
-  if (!user) {
-    alert("❌ बुकिंग के लिए पहले Login करें।");
-    return;
-  }
+        if (!user) {
+          alert("❌ बुकिंग के लिए पहले Login करें।");
+          return;
+        }
 
-  const pickup = prompt("📍 Pickup Location लिखें:");
-  if (!pickup || !pickup.trim()) return;
+        const pickup = prompt("📍 Pickup Location लिखें:");
+        if (!pickup || !pickup.trim()) return;
 
-  const drop = prompt("📍 Drop Location लिखें:");
-  if (!drop || !drop.trim()) return;
+        const drop = prompt("📍 Drop Location लिखें:");
+        if (!drop || !drop.trim()) return;
 
-  if (pickup.trim().length > 200 || drop.trim().length > 200) {
-    alert("❌ Location अधिकतम 200 अक्षरों की हो सकती है।");
-    return;
-  }
+        if (
+          pickup.trim().length > 200 ||
+          drop.trim().length > 200
+        ) {
+          alert("❌ Location अधिकतम 200 अक्षरों की हो सकती है।");
+          return;
+        }
 
-  bookBtn.disabled = true;
-  bookBtn.textContent = "Booking हो रही है...";
+        bookBtn.disabled = true;
+        bookBtn.textContent = "Booking हो रही है...";
 
-  try {
-    await addDoc(collection(db, "bookings"), {
-      customerId: user.uid,
-      vehicleId: doc.id,
-      vehicleName: vehicle.vehicleName || "गाड़ी",
-      pickup: pickup.trim(),
-      drop: drop.trim(),
-      status: "pending"
+        try {
+          await addDoc(collection(db, "bookings"), {
+            customerId: user.uid,
+            vehicleId: vehicleDoc.id,
+            vehicleName: vehicle.vehicleName || "गाड़ी",
+            pickup: pickup.trim(),
+            drop: drop.trim(),
+            status: "pending"
+          });
+
+          alert("✅ आपकी Booking Request जमा हो गई!");
+        } catch (error) {
+          console.error(error);
+          alert("❌ Booking Error: " + error.code);
+        } finally {
+          bookBtn.disabled = false;
+          bookBtn.textContent = "📅 Book Now";
+        }
+      });
+
+      card.append(title, type, city, price, bookBtn);
+      status.appendChild(card);
     });
 
-    alert("✅ आपकी Booking सफलतापूर्वक जमा हो गई!");
   } catch (error) {
-    alert("❌ Booking Error: " + error.code);
-  } finally {
-    bookBtn.disabled = false;
-    bookBtn.textContent = "📅 Book Now";
-  }
-});
-
-card.append(title, type, city, price, bookBtn);
-status.appendChild(card);
-
-});
-
-} catch (error) {
-  console.error(error);
+    console.error(error);
     status.textContent =
       "Firebase connection failed: " + error.code;
   }
 }
-window.searchVehicles = async function () {
+  
   const city = prompt("किस शहर में गाड़ी चाहिए? जैसे Jaipur");
 
   if (!city || !city.trim()) return;
