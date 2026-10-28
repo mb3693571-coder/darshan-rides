@@ -4,26 +4,49 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Darshan Rides - Vehicle Booking</title>
+
 <style>
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: #f5f7fb;
   text-align: center;
+  color: #222;
 }
+
 header {
   background: #ff8c00;
   color: white;
   padding: 25px 15px;
 }
-h1 { margin: 5px 0; }
+
+h1 {
+  margin: 5px 0;
+}
+
 nav {
   background: #173b73;
   color: white;
   padding: 14px;
 }
-.hero { padding: 25px 15px; }
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin: 0 6px;
+}
+
+.hero {
+  padding: 25px 15px;
+  background: white;
+  margin: 15px;
+  border-radius: 12px;
+}
+
 input, select, button {
   padding: 13px;
   margin: 7px;
@@ -31,25 +54,55 @@ input, select, button {
   border: 1px solid #ddd;
   max-width: 90%;
 }
+
+input, select {
+  width: 280px;
+}
+
 button {
   background: #ff8c00;
   color: white;
   border: none;
   cursor: pointer;
 }
+
+button:disabled {
+  opacity: 0.6;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   padding: 15px;
 }
+
 .card {
   background: white;
   padding: 22px 10px;
   border-radius: 12px;
   box-shadow: 0 2px 8px #ddd;
 }
-.card span { font-size: 38px; }
+
+.card span {
+  font-size: 38px;
+}
+
+.vehicle-card {
+  background: white;
+  padding: 15px;
+  margin: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+#firebaseStatus {
+  padding: 15px;
+  margin: 15px;
+  background: #fff;
+  border-radius: 10px;
+}
+
 footer {
   background: #173b73;
   color: white;
@@ -58,6 +111,7 @@ footer {
 }
 </style>
 </head>
+
 <body>
 
 <header>
@@ -65,91 +119,95 @@ footer {
   <p>आपकी यात्रा, हमारी जिम्मेदारी</p>
 </header>
 
-<nav>Home | Book Ride | Owner | Login</nav>
-  <section class="hero" id="ownerRegistration">
-  <h2>🚗 गाड़ी मालिक रजिस्ट्रेशन</h2>
-  <p>Darshan Rides पर अपनी गाड़ी जोड़ें</p>
+<nav>
+  <a href="#home">Home</a> |
+  <a href="#booking">Book Ride</a> |
+  <a href="#ownerRegistration">Owner</a> |
+  <a href="#customerAuth">Login</a>
+</nav>
 
-  <input type="text" id="ownerName"
-    placeholder="मालिक का नाम">
+<section class="hero" id="home">
+  <h2>🚗 Darshan Rides में आपका स्वागत है</h2>
+  <p>राजस्थान में अपनी पसंद की गाड़ी खोजें और बुक करें।</p>
+</section>
 
-  <input type="text" id="ownerCity"
-    placeholder="शहर का नाम">
-
-  <select id="ownerVehicleType">
-    <option value="">गाड़ी चुनें</option>
-    <option value="Car">🚗 Car</option>
-    <option value="Bike">🏍️ Bike</option>
-    <option value="Taxi">🚕 Taxi</option>
-    <option value="Tractor">🚜 Tractor</option>
-    <option value="Truck">🚚 Truck</option>
-    <option value="Pickup">🛻 Pickup</option>
-    <option value="Bus">🚌 Bus</option>
-  </select>
-
-  <input type="text" id="ownerVehicleName"
-    placeholder="गाड़ी का नाम / मॉडल">
-
-  <input type="number" id="ownerPrice"
-    placeholder="किराया ₹ प्रति किलोमीटर"
-    min="1">
-
-  <br>
-
-<button type="button" onclick="registerVehicle()">
-  🚗 गाड़ी रजिस्टर करें
-</button>
-
-  <p id="ownerStatus">
-    रजिस्ट्रेशन सुविधा तैयार की जा रही है।
-  </p>
-  </section>
-<section id="customerAuth" class="hero">
+<section class="hero" id="customerAuth">
   <h2>👤 ग्राहक रजिस्ट्रेशन / लॉगिन</h2>
 
   <input
     type="email"
     id="customerEmail"
     placeholder="अपना Email लिखें"
+    autocomplete="email"
   >
+
+  <br>
 
   <input
     type="password"
     id="customerPassword"
     placeholder="Password (कम से कम 6 अक्षर)"
+    autocomplete="current-password"
   >
 
   <br>
 
-  <button onclick="registerCustomer()">
+  <button type="button" id="registerBtn">
     नया अकाउंट बनाएँ
   </button>
 
-  <button onclick="loginCustomer()">
+  <button type="button" id="loginBtn">
     Login करें
   </button>
 
   <p id="authStatus"></p>
-  <div id="myAccount" style="display:none">
-  <h3>👤 My Account</h3>
-  <p id="userEmail"></p>
 
-  <button onclick="logoutCustomer()">
-    🚪 Logout
-  </button>
+  <div id="myAccount" style="display:none">
+    <h3>👤 My Account</h3>
+    <p id="userEmail"></p>
+
+    <button type="button" id="logoutBtn">
+      🚪 Logout
+    </button>
   </div>
 </section>
-<section class="hero">
-  <h2>अपनी पसंद की गाड़ी बुक करें</h2>
-  <p>Car, Bike, Taxi, Tractor, Truck & Bus</p>
 
-  <input type="text" placeholder="Pickup Location">
-  <input type="text" placeholder="Drop Location">
+<section class="hero" id="booking">
+  <h2>🚘 अपनी पसंद की गाड़ी बुक करें</h2>
+
+  <p>Car, Bike, Taxi, Tractor, Truck, Pickup और Bus</p>
+
+  <input
+    type="text"
+    id="pickupLocation"
+    placeholder="Pickup Location"
+  >
 
   <br>
-<button onclick="searchVehicles()">
-  🔍 Search Vehicles
-</button>
+
+  <input
+    type="text"
+    id="dropLocation"
+    placeholder="Drop Location"
+  >
+
+  <br>
+
+  <input
+    type="text"
+    id="searchCity"
+    placeholder="शहर का नाम जैसे Jaipur"
+  >
+
+  <br>
+
+  <button type="button" id="searchBtn">
+    🔍 Search Vehicles
+  </button>
+
+  <button type="button" id="showAllBtn">
+    🚗 सभी गाड़ियाँ
+  </button>
 </section>
 
 <h2>🚘 हमारी गाड़ियाँ</h2>
@@ -164,66 +222,100 @@ footer {
   <div class="card"><span>🚌</span><h3>Bus</h3></div>
 </div>
 
+<h2>📋 उपलब्ध गाड़ियाँ</h2>
+
+<p id="firebaseStatus">
+  Firebase से कनेक्ट हो रहा है...
+</p>
+
+<div id="vehicleList"></div>
+
+<section class="hero" id="ownerRegistration">
+  <h2>🚗 गाड़ी मालिक रजिस्ट्रेशन</h2>
+
+  <p>Darshan Rides पर अपनी गाड़ी जोड़ें</p>
+
+  <input
+    type="text"
+    id="ownerName"
+    placeholder="मालिक का नाम"
+  >
+
+  <br>
+
+  <input
+    type="text"
+    id="ownerCity"
+    placeholder="शहर का नाम"
+  >
+
+  <br>
+
+  <select id="ownerVehicleType">
+    <option value="">गाड़ी चुनें</option>
+    <option value="Car">🚗 Car</option>
+    <option value="Bike">🏍️ Bike</option>
+    <option value="Taxi">🚕 Taxi</option>
+    <option value="Tractor">🚜 Tractor</option>
+    <option value="Truck">🚚 Truck</option>
+    <option value="Pickup">🛻 Pickup</option>
+    <option value="Bus">🚌 Bus</option>
+  </select>
+
+  <br>
+
+  <input
+    type="text"
+    id="ownerVehicleName"
+    placeholder="गाड़ी का नाम / मॉडल"
+  >
+
+  <br>
+
+  <input
+    type="number"
+    id="ownerPrice"
+    placeholder="किराया ₹ प्रति किलोमीटर"
+    min="1"
+  >
+
+  <br>
+
+  <button type="button" id="registerVehicleBtn">
+    🚗 गाड़ी रजिस्टर करें
+  </button>
+
+  <p id="ownerStatus">
+    गाड़ी जोड़ने के लिए पहले Login करें।
+  </p>
+</section>
+
+<section
+  id="adminPanel"
+  class="hero"
+  style="display:none; border:2px solid orange;"
+>
+  <h2>🛡️ Darshan Rides Admin Panel</h2>
+
+  <p>गाड़ी मालिकों के आवेदन यहाँ दिखाई देंगे।</p>
+
+  <button type="button" id="loadRequestsBtn">
+    📋 आवेदन देखें
+  </button>
+
+  <div id="adminRequests"></div>
+</section>
+
 <footer>
-  <h3>Darshan Rides</h3>
+  <h3>🙏 Darshan Rides</h3>
   <p>Vehicle Booking Platform</p>
   <p>Made in India 🇮🇳</p>
 </footer>
-  <script>
-document.addEventListener("DOMContentLoaded", function () {
-  document.getElementById("firebaseStatus").textContent =
-    "साधारण JavaScript चल रहा है ✅";
-});
-  </script>
-  <script>
-const moduleTest = document.createElement("script");
-moduleTest.type = "module";
-moduleTest.textContent = `
-  document.getElementById("firebaseStatus").textContent =
-    "Module Test सफल ✅";
-`;
-document.head.appendChild(moduleTest);
-  </script>
-  <script>
-window.addEventListener("error", function(event) {
-  const box = document.getElementById("firebaseStatus");
 
-  if (box) {
-    box.textContent =
-      "❌ JavaScript Error: " + event.message;
-  }
-});
-
-window.addEventListener("unhandledrejection", function(event) {
-  const box = document.getElementById("firebaseStatus");
-
-  if (box) {
-    box.textContent =
-      "❌ Promise Error: " + event.reason;
-  }
-});
-  </script>
-  <script type="module">
-  const status = document.getElementById("firebaseStatus");
-
-  try {
-    await import(
-      "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
-    );
-
-    status.textContent = "Firebase SDK Load सफल ✅";
-  } catch (error) {
-    status.textContent =
-      "Firebase SDK Error: " + error.message;
-  }
-  </script>
 <script type="module">
-  document.addEventListener("DOMContentLoaded", function () {
-  loadVehicles();
-});
-  
-import { initializeApp } from
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
   getFirestore,
@@ -234,6 +326,7 @@ import {
   updateDoc,
   setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -241,6 +334,9 @@ import {
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+// FIREBASE CONFIG
+
 const firebaseConfig = {
   apiKey: "AIzaSyB_Uvk4_RAlASmsbXD3p27-c3BI375S4-Y",
   authDomain: "darshan-rides.firebaseapp.com",
@@ -249,117 +345,225 @@ const firebaseConfig = {
   messagingSenderId: "474963567773",
   appId: "1:474963567773:web:be0eb8f210b803c121e074"
 };
-alert("Firebase मुख्य कोड यहाँ तक चला ✅");
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
-onAuthStateChanged(auth, (user) => {
-  const account = document.getElementById("myAccount");
-  const email = document.getElementById("userEmail");
 
-  if (!account || !email) return;
+// ADMIN UID
+const ADMIN_UID = "C0RaEMGzijTWtQtPdjWh5bbUhZf2";
+
+// HTML ELEMENTS
+
+const firebaseStatus =
+  document.getElementById("firebaseStatus");
+
+const vehicleList =
+  document.getElementById("vehicleList");
+
+const authStatus =
+  document.getElementById("authStatus");
+
+const ownerStatus =
+  document.getElementById("ownerStatus");
+
+// AUTH STATE
+
+onAuthStateChanged(auth, (user) => {
+
+  const account =
+    document.getElementById("myAccount");
+
+  const email =
+    document.getElementById("userEmail");
+
+  const adminPanel =
+    document.getElementById("adminPanel");
 
   if (user) {
     account.style.display = "block";
-    email.textContent = "Email: " + user.email;
+
+    email.textContent =
+      "Email: " + (user.email || "");
+
+    adminPanel.style.display =
+      user.uid === ADMIN_UID ? "block" : "none";
+
   } else {
     account.style.display = "none";
     email.textContent = "";
+    adminPanel.style.display = "none";
   }
-  const adminPanel = document.getElementById("adminPanel");
 
-  if (adminPanel) {
-    adminPanel.style.display =
-      user && user.uid === "C0RaEMGzijTWtQtPdjWh5bbUhZf2" ? "block" : "none";
-  }
 });
 
-window.logoutCustomer = async function () {
+// CUSTOMER REGISTER
+
+document.getElementById("registerBtn")
+.addEventListener("click", async () => {
+
+  const email =
+    document.getElementById("customerEmail").value.trim();
+
+  const password =
+    document.getElementById("customerPassword").value;
+
+  if (!email || password.length < 6) {
+    authStatus.textContent =
+      "❌ सही Email और कम से कम 6 अक्षर का Password डालें।";
+    return;
+  }
+
+  authStatus.textContent = "अकाउंट बन रहा है...";
+
+  try {
+    await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    authStatus.textContent =
+      "✅ आपका अकाउंट बन गया!";
+
+  } catch (error) {
+    authStatus.textContent =
+      "❌ " + error.message;
+  }
+
+});
+
+// CUSTOMER LOGIN
+
+document.getElementById("loginBtn")
+.addEventListener("click", async () => {
+
+  const email =
+    document.getElementById("customerEmail").value.trim();
+
+  const password =
+    document.getElementById("customerPassword").value;
+
+  authStatus.textContent = "Login हो रहा है...";
+
+  try {
+    await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    authStatus.textContent =
+      "✅ Login सफल!";
+
+  } catch (error) {
+    authStatus.textContent =
+      "❌ " + error.message;
+  }
+
+});
+
+// LOGOUT
+
+document.getElementById("logoutBtn")
+.addEventListener("click", async () => {
+
   try {
     await signOut(auth);
 
-    document.getElementById("authStatus").textContent =
+    authStatus.textContent =
       "✅ Logout सफल!";
+
   } catch (error) {
-    document.getElementById("authStatus").textContent =
-      "❌ Logout Error: " + error.code;
+    authStatus.textContent =
+      "❌ " + error.message;
   }
-};
-window.registerCustomer = async function () {
-  const email = document.getElementById("customerEmail").value.trim();
-  const password = document.getElementById("customerPassword").value;
-  const status = document.getElementById("authStatus");
+
+});
+
+// LOAD VEHICLES
+
+async function loadVehicles(searchCity = "") {
+
+  firebaseStatus.textContent =
+    "गाड़ियाँ लोड हो रही हैं...";
+
+  vehicleList.replaceChildren();
 
   try {
-    await createUserWithEmailAndPassword(auth, email, password);
-    status.textContent = "✅ आपका अकाउंट बन गया!";
-  } catch (error) {
-    status.textContent = "❌ " + error.message;
-  }
-};
 
-window.loginCustomer = async function () {
-  const email = document.getElementById("customerEmail").value.trim();
-  const password = document.getElementById("customerPassword").value;
-  const status = document.getElementById("authStatus");
+    const snapshot = await getDocs(
+      collection(db, "vehicles")
+    );
 
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    status.textContent = "✅ Login सफल!";
-  } catch (error) {
-    status.textContent = "❌ " + error.message;
-  }
-};
-async function loadVehicles() {
-  const status = document.getElementById("firebaseStatus");
-
-  try {
-    const snapshot = await getDocs(collection(db, "vehicles"));
-
-    status.innerHTML =
-      "Firebase Connected ✅<br>कुल गाड़ियाँ: " + snapshot.size;
+    let found = 0;
 
     snapshot.forEach((vehicleDoc) => {
+
       const vehicle = vehicleDoc.data();
 
+      const vehicleCity =
+        String(vehicle.city || vehicle.City || "");
+
+      if (
+        searchCity &&
+        vehicleCity.trim().toLowerCase() !==
+        searchCity.trim().toLowerCase()
+      ) {
+        return;
+      }
+
+      found++;
+
       const card = document.createElement("div");
-      card.style.cssText =
-        "padding:15px;margin:10px;border:1px solid #ddd;border-radius:10px;";
+      card.className = "vehicle-card";
 
       const title = document.createElement("h3");
-      title.textContent = vehicle.vehicleName || "गाड़ी";
+      title.textContent =
+        vehicle.vehicleName || "गाड़ी";
 
       const type = document.createElement("p");
-      type.textContent = "प्रकार: " + (vehicle.vehicleType || "N/A");
+      type.textContent =
+        "प्रकार: " + (vehicle.vehicleType || "N/A");
 
       const city = document.createElement("p");
-      city.textContent = "शहर: " + (vehicle.city || "N/A");
+      city.textContent =
+        "शहर: " + vehicleCity;
 
       const price = document.createElement("p");
       price.textContent =
-        "किराया: ₹" + (vehicle.pricePerKm ?? 0) + "/km";
+        "किराया: ₹" +
+        (vehicle.pricePerKm ?? 0) +
+        "/km";
 
       const bookBtn = document.createElement("button");
       bookBtn.textContent = "📅 Book Now";
 
       bookBtn.addEventListener("click", async () => {
+
         const user = auth.currentUser;
 
         if (!user) {
-          alert("❌ बुकिंग के लिए पहले Login करें।");
+          alert("❌ पहले Login करें।");
           return;
         }
 
-        const pickup = prompt("📍 Pickup Location लिखें:");
-        if (!pickup || !pickup.trim()) return;
+        const pickup =
+          document.getElementById("pickupLocation")
+          .value.trim();
 
-        const drop = prompt("📍 Drop Location लिखें:");
-        if (!drop || !drop.trim()) return;
+        const drop =
+          document.getElementById("dropLocation")
+          .value.trim();
 
-        if (
-          pickup.trim().length > 200 ||
-          drop.trim().length > 200
-        ) {
+        if (!pickup || !drop) {
+          alert("❌ Pickup और Drop Location भरें।");
+          document.getElementById("booking")
+            .scrollIntoView({ behavior: "smooth" });
+          return;
+        }
+
+        if (pickup.length > 200 || drop.length > 200) {
           alert("❌ Location अधिकतम 200 अक्षरों की हो सकती है।");
           return;
         }
@@ -368,246 +572,326 @@ async function loadVehicles() {
         bookBtn.textContent = "Booking हो रही है...";
 
         try {
-          await addDoc(collection(db, "bookings"), {
-            customerId: user.uid,
-            vehicleId: vehicleDoc.id,
-            vehicleName: vehicle.vehicleName || "गाड़ी",
-            pickup: pickup.trim(),
-            drop: drop.trim(),
-            status: "pending"
-          });
+
+          await addDoc(
+            collection(db, "bookings"),
+            {
+              customerId: user.uid,
+              vehicleId: vehicleDoc.id,
+              vehicleName:
+                vehicle.vehicleName || "गाड़ी",
+              pickup: pickup,
+              drop: drop,
+              status: "pending"
+            }
+          );
 
           alert("✅ आपकी Booking Request जमा हो गई!");
+
         } catch (error) {
+
           console.error(error);
-          alert("❌ Booking Error: " + error.code);
+
+          alert(
+            "❌ Booking Error: " +
+            (error.code || error.message)
+          );
+
         } finally {
+
           bookBtn.disabled = false;
           bookBtn.textContent = "📅 Book Now";
+
         }
+
       });
 
-      card.append(title, type, city, price, bookBtn);
-      status.appendChild(card);
+      card.append(
+        title,
+        type,
+        city,
+        price,
+        bookBtn
+      );
+
+      vehicleList.appendChild(card);
+
     });
 
-  } catch (error) {
-    console.error(error);
-    status.textContent =
-      "Firebase connection failed: " + error.code;
-  }
-}
-
-// ✅ यह लाइन जोड़ें
-window.searchVehicles = async function () {
-  const city = prompt("किस शहर में गाड़ी चाहिए? जैसे Jaipur");
-
-  if (!city || !city.trim()) return;
-
- // 🔍 गाड़ियाँ खोजने का फ़ंक्शन
-window.searchVehicles = async function () {
-  const city = prompt("किस शहर में गाड़ी चाहिए? जैसे Jaipur");
-
-  if (!city || !city.trim()) return;
-
-  const status = document.getElementById("firebaseStatus");
-  status.textContent = "गाड़ियाँ खोजी जा रही हैं...";
-
-  try {
-    const snapshot = await getDocs(collection(db, "vehicles"));
-    const searchCity = city.trim().toLowerCase();
-    let found = 0;
-
-    status.textContent = "";
-
-  
-  status.textContent = "गाड़ियाँ खोजी जा रही हैं...";
-
-  try {
-    const snapshot = await getDocs(collection(db, "vehicles"));
-    const searchCity = city.trim().toLowerCase();
-    let found = 0;
-
-    status.textContent = "";
-
-    snapshot.forEach((doc) => {
-      const vehicle = doc.data();
-      const vehicleCity = String(vehicle.city || vehicle.City || "");
-
-      if (vehicleCity.trim().toLowerCase() === searchCity) {
-        found++;
-
-        const card = document.createElement("div");
-        card.style.cssText =
-          "padding:15px;margin:10px;border:1px solid #ddd;border-radius:10px;";
-
-        const name = document.createElement("h3");
-        name.textContent = vehicle.vehicleName || "गाड़ी";
-
-        const details = document.createElement("p");
-        details.textContent =
-          vehicleCity + " | ₹" + (vehicle.pricePerKm ?? 0) + "/km";
-
-        card.append(name, details);
-        status.appendChild(card);
-      }
-    });
+    firebaseStatus.textContent =
+      "Firebase Connected ✅ | कुल गाड़ियाँ: " + found;
 
     if (found === 0) {
-      status.textContent = "इस शहर में कोई गाड़ी नहीं मिली।";
+      vehicleList.textContent =
+        searchCity
+        ? "इस शहर में अभी कोई गाड़ी उपलब्ध नहीं है।"
+        : "अभी कोई गाड़ी उपलब्ध नहीं है।";
     }
+
   } catch (error) {
-    status.textContent = "Error: " + error.code;
+
+    console.error(error);
+
+    firebaseStatus.textContent =
+      "❌ Firebase Error: " +
+      (error.code || error.message);
+
   }
-};
-  window.registerVehicle = async function () {
-  const status = document.getElementById("ownerStatus");
+
+}
+
+// SEARCH VEHICLES
+
+document.getElementById("searchBtn")
+.addEventListener("click", () => {
+
+  const city =
+    document.getElementById("searchCity").value.trim();
+
+  if (!city) {
+    alert("पहले शहर का नाम लिखें।");
+    return;
+  }
+
+  loadVehicles(city);
+
+});
+
+// SHOW ALL VEHICLES
+
+document.getElementById("showAllBtn")
+.addEventListener("click", () => {
+
+  document.getElementById("searchCity").value = "";
+
+  loadVehicles();
+
+});
+
+// OWNER REGISTRATION
+
+document.getElementById("registerVehicleBtn")
+.addEventListener("click", async () => {
+
   const user = auth.currentUser;
 
   if (!user) {
-    status.textContent = "❌ पहले Login करें।";
+    ownerStatus.textContent =
+      "❌ पहले Login करें।";
     return;
   }
 
-  const ownerName = document.getElementById("ownerName").value.trim();
-  const city = document.getElementById("ownerCity").value.trim();
-  const vehicleType = document.getElementById("ownerVehicleType").value;
-  const vehicleName = document.getElementById("ownerVehicleName").value.trim();
-  const pricePerKm = Number(document.getElementById("ownerPrice").value);
+  const ownerName =
+    document.getElementById("ownerName").value.trim();
 
-  if (!ownerName || !city || !vehicleType || !vehicleName ||
-      !Number.isFinite(pricePerKm) || pricePerKm <= 0 ||
-      pricePerKm > 100000 ||
-      ownerName.length > 100 || city.length > 100 ||
-      vehicleName.length > 100) {
-    status.textContent = "❌ सभी जानकारी सही भरें।";
+  const city =
+    document.getElementById("ownerCity").value.trim();
+
+  const vehicleType =
+    document.getElementById("ownerVehicleType").value;
+
+  const vehicleName =
+    document.getElementById("ownerVehicleName").value.trim();
+
+  const pricePerKm =
+    Number(document.getElementById("ownerPrice").value);
+
+  if (
+    !ownerName ||
+    !city ||
+    !vehicleType ||
+    !vehicleName ||
+    !Number.isFinite(pricePerKm) ||
+    pricePerKm <= 0 ||
+    pricePerKm > 100000 ||
+    ownerName.length > 100 ||
+    city.length > 100 ||
+    vehicleName.length > 100
+  ) {
+    ownerStatus.textContent =
+      "❌ सभी जानकारी सही भरें।";
     return;
   }
 
-  status.textContent = "आवेदन जमा हो रहा है...";
+  ownerStatus.textContent =
+    "आवेदन जमा हो रहा है...";
 
   try {
-    await addDoc(collection(db, "vehicleRequests"), {
-      ownerId: user.uid,
-      ownerName: ownerName,
-      city: city,
-      vehicleType: vehicleType,
-      vehicleName: vehicleName,
-      pricePerKm: pricePerKm,
-      status: "pending"
-    });
 
-    status.textContent = "✅ आवेदन जमा हो गया! एडमिन की मंजूरी बाकी है।";
+    await addDoc(
+      collection(db, "vehicleRequests"),
+      {
+        ownerId: user.uid,
+        ownerName: ownerName,
+        city: city,
+        vehicleType: vehicleType,
+        vehicleName: vehicleName,
+        pricePerKm: pricePerKm,
+        status: "pending"
+      }
+    );
+
+    ownerStatus.textContent =
+      "✅ आवेदन जमा हो गया! एडमिन की मंजूरी बाकी है।";
+
   } catch (error) {
+
     console.error(error);
-    status.textContent = "❌ Error: " + error.code;
+
+    ownerStatus.textContent =
+      "❌ Error: " +
+      (error.code || error.message);
+
   }
-};
-  // Admin के लिए आवेदन दिखाना
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("loadRequestsBtn")
-  .addEventListener("click", async function () {
 
-    const box = document.getElementById("adminRequests");
-    const user = auth.currentUser;
+});
 
-  if (!user || user.uid !== "C0RaEMGzijTWtQtPdjWh5bbUhZf2") {
-      box.textContent = "❌ केवल Admin आवेदन देख सकता है।";
+// ADMIN PANEL
+
+document.getElementById("loadRequestsBtn")
+.addEventListener("click", async () => {
+
+  const box =
+    document.getElementById("adminRequests");
+
+  const user = auth.currentUser;
+
+  if (!user || user.uid !== ADMIN_UID) {
+    box.textContent =
+      "❌ केवल Admin आवेदन देख सकता है।";
+    return;
+  }
+
+  box.textContent = "आवेदन लोड हो रहे हैं...";
+
+  try {
+
+    const snapshot = await getDocs(
+      collection(db, "vehicleRequests")
+    );
+
+    box.replaceChildren();
+
+    if (snapshot.empty) {
+      box.textContent =
+        "अभी कोई आवेदन नहीं है।";
       return;
     }
 
-    box.textContent = "आवेदन लोड हो रहे हैं...";
+    snapshot.forEach((item) => {
 
-    try {
-      const snapshot = await getDocs(
-        collection(db, "vehicleRequests")
-      );
+      const data = item.data();
 
-      box.replaceChildren();
+      const card = document.createElement("div");
+      card.className = "vehicle-card";
 
-      if (snapshot.empty) {
-        box.textContent = "अभी कोई आवेदन नहीं है।";
-        return;
-      }
+      const details = document.createElement("p");
 
-      snapshot.forEach((item) => {
-        const data = item.data();
+      details.textContent =
+        `${data.ownerName || ""} | ` +
+        `${data.city || ""} | ` +
+        `${data.vehicleType || ""} | ` +
+        `${data.vehicleName || ""} | ` +
+        `₹${data.pricePerKm ?? 0}/km | ` +
+        `${data.status || ""}`;
 
-        const card = document.createElement("div");
-        card.style.cssText =
-          "border:1px solid #ccc;padding:12px;margin:10px 0;";
+      card.appendChild(details);
 
-        const details = document.createElement("p");
-        details.textContent =
-          `${data.ownerName} | ${data.city} | ` +
-          `${data.vehicleType} | ${data.vehicleName} | ` +
-          `₹${data.pricePerKm}/km | ${data.status}`;
+      if (data.status === "pending") {
 
-        card.appendChild(details);
+        ["approved", "rejected"].forEach((decision) => {
 
-        if (data.status === "pending") {
-          ["approved", "rejected"].forEach((decision) => {
-            const button = document.createElement("button");
+          const button =
+            document.createElement("button");
 
-            button.textContent =
-              decision === "approved" ? "✅ Approve" : "❌ Reject";
+          button.textContent =
+            decision === "approved"
+            ? "✅ Approve"
+            : "❌ Reject";
 
-            button.addEventListener("click", async () => {
-              button.disabled = true;
+          button.addEventListener("click", async () => {
 
-              try {
-              if (decision === "approved") {
-  await setDoc(doc(db, "vehicles", item.id), {
-    vehicleName: data.vehicleName,
-    vehicleType: data.vehicleType,
-    city: data.city,
-    pricePerKm: data.pricePerKm
-  });
-}
+            const buttons =
+              card.querySelectorAll("button");
 
-await updateDoc(
-  doc(db, "vehicleRequests", item.id),
-  { status: decision }
-);
-
-                details.textContent +=
-                  ` | नया Status: ${decision}`;
-
-                card.querySelectorAll("button")
-                  .forEach((btn) => btn.remove());
-
-              } catch (error) {
-                alert("❌ Error: " + error.code);
-                button.disabled = false;
-              }
+            buttons.forEach(btn => {
+              btn.disabled = true;
             });
 
-            card.appendChild(button);
+            try {
+
+              if (decision === "approved") {
+
+                await setDoc(
+                  doc(db, "vehicles", item.id),
+                  {
+                    vehicleName: data.vehicleName,
+                    vehicleType: data.vehicleType,
+                    city: data.city,
+                    pricePerKm: data.pricePerKm
+                  }
+                );
+
+              }
+
+              await updateDoc(
+                doc(db, "vehicleRequests", item.id),
+                {
+                  status: decision
+                }
+              );
+
+              details.textContent +=
+                " | नया Status: " + decision;
+
+              buttons.forEach(btn => btn.remove());
+
+              if (decision === "approved") {
+                loadVehicles();
+              }
+
+            } catch (error) {
+
+              alert(
+                "❌ Error: " +
+                (error.code || error.message)
+              );
+
+              buttons.forEach(btn => {
+                btn.disabled = false;
+              });
+
+            }
+
           });
-        }
 
-        box.appendChild(card);
-      });
+          card.appendChild(button);
 
-    } catch (error) {
-      box.textContent = "❌ Error: " + error.code;
-    }
-  });
+        });
+
+      }
+
+      box.appendChild(card);
+
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    box.textContent =
+      "❌ Error: " +
+      (error.code || error.message);
+
+  }
+
 });
-  document.addEventListener("DOMContentLoaded", function () {
-  loadVehicles();
-});
+
+// START
+
+loadVehicles();
+
 </script>
-<section id="adminPanel" style="display:none; padding:20px; margin:15px; border:2px solid orange; border-radius:12px;">
-  <h2>🛡️ Darshan Rides Admin Panel</h2>
-  <p>गाड़ी मालिकों के आवेदन यहाँ दिखाई देंगे।</p>
 
-  <button id="loadRequestsBtn">
-    📋 आवेदन देखें
-  </button>
-
-  <div id="adminRequests"></div>
-</section>
-<p id="firebaseStatus">Website Updated ✅</p>
 </body>
 </html>
