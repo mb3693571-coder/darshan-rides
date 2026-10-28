@@ -436,10 +436,19 @@ document.addEventListener("DOMContentLoaded", () => {
               button.disabled = true;
 
               try {
-                await updateDoc(
-                  doc(db, "vehicleRequests", item.id),
-                  { status: decision }
-                );
+              if (decision === "approved") {
+  await setDoc(doc(db, "vehicles", item.id), {
+    vehicleName: data.vehicleName,
+    vehicleType: data.vehicleType,
+    city: data.city,
+    pricePerKm: data.pricePerKm
+  });
+}
+
+await updateDoc(
+  doc(db, "vehicleRequests", item.id),
+  { status: decision }
+);
 
                 details.textContent +=
                   ` | नया Status: ${decision}`;
