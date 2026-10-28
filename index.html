@@ -331,10 +331,14 @@ bookBtn.addEventListener("click", () => {
     bookBtn.textContent = "📅 Book Now";
   }
 });
-  
 
-  } catch (error) {
-    console.error(error);
+card.append(title, type, city, price, bookBtn);
+status.appendChild(card);
+
+});
+
+} catch (error) {
+  console.error(error);
     status.textContent =
       "Firebase connection failed: " + error.code;
   }
