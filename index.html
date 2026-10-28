@@ -175,6 +175,15 @@ document.addEventListener("DOMContentLoaded", function () {
     "साधारण JavaScript चल रहा है ✅";
 });
   </script>
+  <script>
+const moduleTest = document.createElement("script");
+moduleTest.type = "module";
+moduleTest.textContent = `
+  document.getElementById("firebaseStatus").textContent =
+    "Module Test सफल ✅";
+`;
+document.head.appendChild(moduleTest);
+  </script>
 <script type="module">
   document.getElementById("firebaseStatus").textContent =
   "Firebase Module शुरू हुआ ✅";
