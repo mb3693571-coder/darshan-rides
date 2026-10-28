@@ -284,8 +284,26 @@ snapshot.forEach((doc) => {
   const price = document.createElement("p");
   price.textContent = "किराया: ₹" + (vehicle.pricePerKm ?? 0) + "/km";
 
-  card.append(title, type, city, price);
-  status.appendChild(card);
+  const bookBtn = document.createElement("button");
+bookBtn.textContent = "📅 Book Now";
+
+bookBtn.addEventListener("click", () => {
+  const user = auth.currentUser;
+
+  if (!user) {
+    alert("❌ बुकिंग के लिए पहले Login करें।");
+    return;
+  }
+
+  alert(
+    "🚗 गाड़ी: " + (vehicle.vehicleName || "गाड़ी") +
+    "\n📍 शहर: " + (vehicle.city || "N/A") +
+    "\n\nबुकिंग फॉर्म अगले चरण में जोड़ा जाएगा।"
+  );
+});
+
+card.append(title, type, city, price, bookBtn);
+status.appendChild(card);
 });
   
 
