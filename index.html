@@ -379,7 +379,16 @@ window.searchVehicles = async function () {
 };
 loadVehicles();
 </script>
+<section id="adminPanel" style="display:none; padding:20px; margin:15px; border:2px solid orange; border-radius:12px;">
+  <h2>🛡️ Darshan Rides Admin Panel</h2>
+  <p>गाड़ी मालिकों के आवेदन यहाँ दिखाई देंगे।</p>
 
+  <button id="loadRequestsBtn">
+    📋 आवेदन देखें
+  </button>
+
+  <div id="adminRequests"></div>
+</section>
 <p id="firebaseStatus">Connecting to Firebase...</p>
 </body>
 </html>
