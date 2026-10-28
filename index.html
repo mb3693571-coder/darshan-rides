@@ -902,7 +902,137 @@ document.getElementById("loadRequestsBtn")
   }
 
 });
+// CUSTOMER BOOKING HISTORY
 
+document.getElementById("myBookingsBtn")
+.addEventListener("click", async () => {
+
+  const box = document.getElementById("myBookingsList");
+  const user = auth.currentUser;
+
+  if (!user) {
+    box.textContent = "❌ पहले Login करें।";
+    return;
+  }
+
+  box.textContent = "बुकिंग लोड हो रही है...";
+
+  try {
+    const q = query(
+      collection(db, "bookings"),
+      where("customerId", "==", user.uid)
+    );
+
+    const snapshot = await getDocs(q);
+
+    box.replaceChildren();
+
+    if (snapshot.empty) {
+      box.textContent = "अभी आपकी कोई बुकिंग नहीं है।";
+      return;
+    }
+
+    snapshot.forEach(item => {
+      const data = item.data();
+
+      const card = document.createElement("div");
+      card.className = "vehicle-card";
+
+      card.textContent =
+        "🚗 " + (data.vehicleName || "गाड़ी") +
+        " | Pickup: " + (data.pickup || "") +
+        " | Drop: " + (data.drop || "") +
+        " | Status: " + (data.status || "pending");
+
+      box.appendChild(card);
+    });
+
+  } catch (error) {
+    box.textContent = "❌ Error: " + (error.code || error.message);
+  }
+});
+
+
+// ADMIN BOOKING MANAGEMENT
+
+document.getElementById("adminBookingsBtn")
+.addEventListener("click", async () => {
+
+  const box = document.getElementById("adminBookingsList");
+  const user = auth.currentUser;
+
+  if (!user || user.uid !== ADMIN_UID) {
+    box.textContent = "❌ केवल Admin देख सकता है।";
+    return;
+  }
+
+  box.textContent = "बुकिंग लोड हो रही हैं...";
+
+  try {
+    const snapshot = await getDocs(collection(db, "bookings"));
+
+    box.replaceChildren();
+
+    if (snapshot.empty) {
+      box.textContent = "अभी कोई Booking नहीं है।";
+      return;
+    }
+
+    snapshot.forEach(item => {
+      const data = item.data();
+
+      const card = document.createElement("div");
+      card.className = "vehicle-card";
+
+      const details = document.createElement("p");
+
+      details.textContent =
+        "🚗 " + (data.vehicleName || "गाड़ी") +
+        " | Pickup: " + (data.pickup || "") +
+        " | Drop: " + (data.drop || "") +
+        " | Status: " + (data.status || "pending");
+
+      card.appendChild(details);
+
+      if (data.status === "pending") {
+        ["approved", "rejected"].forEach(decision => {
+
+          const btn = document.createElement("button");
+
+          btn.textContent =
+            decision === "approved" ? "✅ Approve" : "❌ Reject";
+
+          btn.addEventListener("click", async () => {
+            btn.disabled = true;
+
+            try {
+              await updateDoc(
+                doc(db, "bookings", item.id),
+                { status: decision }
+              );
+
+              details.textContent += " | नया Status: " + decision;
+
+              card.querySelectorAll("button")
+                .forEach(button => button.remove());
+
+            } catch (error) {
+              alert("❌ Error: " + (error.code || error.message));
+              btn.disabled = false;
+            }
+          });
+
+          card.appendChild(btn);
+        });
+      }
+
+      box.appendChild(card);
+    });
+
+  } catch (error) {
+    box.textContent = "❌ Error: " + (error.code || error.message);
+  }
+});
 // START
 
 loadVehicles();
