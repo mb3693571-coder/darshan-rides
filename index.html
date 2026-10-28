@@ -132,6 +132,44 @@ footer {
 </section>
 
 <section class="hero" id="customerAuth">
+  <!-- MOBILE OTP LOGIN -->
+
+<h3>📱 मोबाइल नंबर से Login करें</h3>
+
+<input
+  type="tel"
+  id="phoneNumber"
+  placeholder="मोबाइल नंबर जैसे +919876543210"
+  autocomplete="tel"
+>
+
+<br>
+
+<button type="button" id="sendOtpBtn">
+  📲 OTP भेजें
+</button>
+
+<br>
+
+<input
+  type="text"
+  id="otpCode"
+  placeholder="6 अंकों का OTP"
+  inputmode="numeric"
+  maxlength="6"
+>
+
+<br>
+
+<button type="button" id="verifyOtpBtn">
+  ✅ OTP Verify करें
+</button>
+
+<div id="recaptcha-container"></div>
+
+<p id="otpStatus"></p>
+
+<hr>
   <h2>👤 ग्राहक रजिस्ट्रेशन / लॉगिन</h2>
 
   <input
