@@ -1078,7 +1078,109 @@ document.getElementById("adminBookingsBtn")
 // START
 
 loadVehicles();
+// MOBILE OTP LOGIN
 
+let confirmationResult = null;
+let recaptchaVerifier = null;
+
+const otpStatus = document.getElementById("otpStatus");
+const sendOtpBtn = document.getElementById("sendOtpBtn");
+const verifyOtpBtn = document.getElementById("verifyOtpBtn");
+
+sendOtpBtn.addEventListener("click", async () => {
+
+  const phone = document.getElementById("phoneNumber")
+    .value.trim();
+
+  if (!/^\+91[6-9]\d{9}$/.test(phone)) {
+    otpStatus.textContent =
+      "❌ मोबाइल नंबर +919876543210 के फॉर्मेट में लिखें।";
+    return;
+  }
+
+  sendOtpBtn.disabled = true;
+  otpStatus.textContent = "OTP भेजा जा रहा है...";
+
+  try {
+
+    if (!recaptchaVerifier) {
+      recaptchaVerifier = new RecaptchaVerifier(
+        auth,
+        "recaptcha-container",
+        { size: "normal" }
+      );
+
+      await recaptchaVerifier.render();
+    }
+
+    confirmationResult = await signInWithPhoneNumber(
+      auth,
+      phone,
+      recaptchaVerifier
+    );
+
+    otpStatus.textContent =
+      "✅ OTP भेज दिया गया है।";
+
+  } catch (error) {
+
+    console.error(error);
+
+    otpStatus.textContent =
+      "❌ OTP Error: " + (error.code || error.message);
+
+    if (recaptchaVerifier) {
+      try {
+        recaptchaVerifier.clear();
+      } catch (_) {}
+      recaptchaVerifier = null;
+    }
+
+  } finally {
+    sendOtpBtn.disabled = false;
+  }
+
+});
+
+verifyOtpBtn.addEventListener("click", async () => {
+
+  if (!confirmationResult) {
+    otpStatus.textContent = "❌ पहले OTP भेजें।";
+    return;
+  }
+
+  const code = document.getElementById("otpCode")
+    .value.trim();
+
+  if (!/^\d{6}$/.test(code)) {
+    otpStatus.textContent = "❌ सही 6 अंकों का OTP डालें।";
+    return;
+  }
+
+  verifyOtpBtn.disabled = true;
+  otpStatus.textContent = "OTP Verify हो रहा है...";
+
+  try {
+
+    await confirmationResult.confirm(code);
+
+    otpStatus.textContent =
+      "✅ मोबाइल नंबर से Login सफल!";
+
+    confirmationResult = null;
+
+  } catch (error) {
+
+    console.error(error);
+
+    otpStatus.textContent =
+      "❌ Verify Error: " + (error.code || error.message);
+
+  } finally {
+    verifyOtpBtn.disabled = false;
+  }
+
+});
 </script>
 
 </body>
