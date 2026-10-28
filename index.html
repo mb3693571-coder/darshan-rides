@@ -395,12 +395,6 @@ async function loadVehicles() {
       "Firebase connection failed: " + error.code;
   }
 }
-  } catch (error) {
-    console.error(error);
-    status.textContent =
-      "Firebase connection failed: " + error.code;
-  }
-}
 
 // ✅ यह लाइन जोड़ें
 window.searchVehicles = async function () {
