@@ -594,10 +594,9 @@ await updateDoc(
     }
   });
 });
-  document.getElementById("firebaseStatus").textContent =
-  "JavaScript शुरू हो गया ✅";
-
-loadVehicles();
+  document.addEventListener("DOMContentLoaded", function () {
+  loadVehicles();
+});
 </script>
 <section id="adminPanel" style="display:none; padding:20px; margin:15px; border:2px solid orange; border-radius:12px;">
   <h2>🛡️ Darshan Rides Admin Panel</h2>
