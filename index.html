@@ -634,7 +634,18 @@ async function loadVehicles(searchCity = "") {
       bookBtn.textContent = "📅 Book Now";
 
       bookBtn.addEventListener("click", async () => {
+// AUTO FARE PER KM
+const rateInput = document.getElementById("farePerKm");
 
+if (rateInput) {
+  rateInput.value = vehicle.pricePerKm ?? "";
+}
+
+const distanceInput = document.getElementById("distanceKm");
+
+if (distanceInput && Number(distanceInput.value) > 0) {
+  document.getElementById("calculateFareBtn").click();
+}
         const user = auth.currentUser;
 
         if (!user) {
