@@ -692,6 +692,16 @@ if (distanceInput && Number(distanceInput.value) > 0) {
           alert("❌ Location अधिकतम 200 अक्षरों की हो सकती है।");
           return;
         }
+        // CUSTOMER PHONE VALIDATION
+const customerPhone = document
+  .getElementById("customerPhone")
+  .value.trim();
+
+if (!/^[6-9][0-9]{9}$/.test(customerPhone)) {
+  alert("❌ सही 10 अंकों का मोबाइल नंबर भरें।");
+  document.getElementById("customerPhone").focus();
+  return;
+}
 // BOOKING FARE CONFIRMATION
 
 const distance = Number(
