@@ -407,7 +407,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
-
+auth.settings.appVerificationDisabledForTesting = true;
 // ADMIN UID
 const ADMIN_UID = "C0RaEMGzijTWtQtPdjWh5bbUhZf2";
 
