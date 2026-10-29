@@ -1347,10 +1347,18 @@ document.getElementById("ownerBookingsBtn")
         const details = document.createElement("p");
 
         details.textContent =
-          "🚗 गाड़ी: " + (data.vehicleName || "") +
-          " | 📍 Pickup: " + (data.pickup || "") +
-          " | 🏁 Drop: " + (data.drop || "") +
-          " | Status: " + (data.status || "");
+  "🚗 गाड़ी: " + (data.vehicleName || "") +
+  " | 📍 Pickup: " + (data.pickup || "") +
+  " | 🏁 Drop: " + (data.drop || "") +
+  " | 📏 दूरी: " +
+  (data.distanceKm != null
+    ? data.distanceKm + " KM"
+    : "उपलब्ध नहीं") +
+  " | 💰 कुल किराया: " +
+  (data.totalFare != null
+    ? "₹" + Number(data.totalFare).toFixed(2)
+    : "उपलब्ध नहीं") +
+  " | Status: " + (data.status || "");
 
         card.appendChild(details);
 
