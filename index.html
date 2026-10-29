@@ -739,7 +739,7 @@ if (!confirmed) {
 
         try {
 
-          await addDoc(
+          const bookingRef = await addDoc(
   collection(db, "bookings"),
   {
     customerId: user.uid,
