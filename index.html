@@ -819,7 +819,14 @@ document.getElementById("showAllBtn")
 
 document.getElementById("registerVehicleBtn")
 .addEventListener("click", async () => {
+const ownerPhone =
+  document.getElementById("ownerPhone").value.trim();
 
+if (!/^[6-9][0-9]{9}$/.test(ownerPhone)) {
+  ownerStatus.textContent =
+    "❌ सही 10 अंकों का मोबाइल नंबर भरें।";
+  return;
+  }
   const user = auth.currentUser;
 
   if (!user) {
