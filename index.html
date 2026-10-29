@@ -1062,10 +1062,18 @@ document.getElementById("myBookingsBtn")
       card.className = "vehicle-card";
 
       card.textContent =
-        "🚗 " + (data.vehicleName || "गाड़ी") +
-        " | Pickup: " + (data.pickup || "") +
-        " | Drop: " + (data.drop || "") +
-        " | Status: " + (data.status || "pending");
+  "🚗 गाड़ी: " + (data.vehicleName || "गाड़ी") +
+  " | 📍 Pickup: " + (data.pickup || "") +
+  " | 🏁 Drop: " + (data.drop || "") +
+  " | 📏 दूरी: " +
+  (data.distanceKm != null
+    ? data.distanceKm + " KM"
+    : "उपलब्ध नहीं") +
+  " | 💰 कुल किराया: " +
+  (data.totalFare != null
+    ? "₹" + Number(data.totalFare).toFixed(2)
+    : "उपलब्ध नहीं") +
+  " | Status: " + (data.status || "pending");
 
       box.appendChild(card);
     });
