@@ -1191,6 +1191,91 @@ verifyOtpBtn.addEventListener("click", async () => {
   }
 
 });
+  // OWNER DASHBOARD - MY VEHICLE BOOKINGS
+
+document.getElementById("ownerBookingsBtn")
+.addEventListener("click", async () => {
+
+  const box = document.getElementById("ownerBookingsList");
+  const user = auth.currentUser;
+
+  if (!user) {
+    box.textContent = "❌ पहले Login करें।";
+    return;
+  }
+
+  box.textContent = "बुकिंग लोड हो रही हैं...";
+
+  try {
+
+    // मालिक की गाड़ियाँ खोजें
+    const vehicleQuery = query(
+      collection(db, "vehicles"),
+      where("ownerId", "==", user.uid)
+    );
+
+    const vehicleSnapshot = await getDocs(vehicleQuery);
+
+    box.replaceChildren();
+
+    if (vehicleSnapshot.empty) {
+      box.textContent = "आपकी कोई Approved गाड़ी नहीं मिली।";
+      return;
+    }
+
+    const vehicleIds = new Set(
+      vehicleSnapshot.docs.map(item => item.id)
+    );
+
+    // हर गाड़ी की Booking अलग से खोजें
+    let totalBookings = 0;
+
+    for (const vehicleId of vehicleIds) {
+
+      const bookingQuery = query(
+        collection(db, "bookings"),
+        where("vehicleId", "==", vehicleId)
+      );
+
+      const bookingSnapshot = await getDocs(bookingQuery);
+
+      bookingSnapshot.forEach(item => {
+
+        const data = item.data();
+
+        const card = document.createElement("div");
+        card.className = "vehicle-card";
+
+        const details = document.createElement("p");
+
+        details.textContent =
+          "🚗 गाड़ी: " + (data.vehicleName || "") +
+          " | 📍 Pickup: " + (data.pickup || "") +
+          " | 🏁 Drop: " + (data.drop || "") +
+          " | Status: " + (data.status || "");
+
+        card.appendChild(details);
+        box.appendChild(card);
+
+        totalBookings++;
+
+      });
+    }
+
+    if (totalBookings === 0) {
+      box.textContent = "अभी आपकी गाड़ियों की कोई Booking नहीं है।";
+    }
+
+  } catch (error) {
+
+    console.error(error);
+
+    box.textContent =
+      "❌ Error: " + (error.code || error.message);
+
+  }
+
+});
 </script>
 
 </body>
