@@ -890,15 +890,16 @@ document.getElementById("loadRequestsBtn")
               if (decision === "approved") {
 
                 await setDoc(
-                  doc(db, "vehicles", item.id),
-                  {
-                    vehicleName: data.vehicleName,
-                    vehicleType: data.vehicleType,
-                    city: data.city,
-                    pricePerKm: data.pricePerKm
-                  }
-                );
-
+  doc(db, "vehicles", item.id),
+  {
+    ownerId: data.ownerId,
+    ownerName: data.ownerName,
+    vehicleName: data.vehicleName,
+    vehicleType: data.vehicleType,
+    city: data.city,
+    pricePerKm: data.pricePerKm
+  }
+);
               }
 
               await updateDoc(
