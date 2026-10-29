@@ -1043,7 +1043,26 @@ document.getElementById("adminBookingsBtn")
         " | Pickup: " + (data.pickup || "") +
         " | Drop: " + (data.drop || "") +
         " | Status: " + (data.status || "pending");
+// BOOKING CONFIRMATION MESSAGE
+const confirmation = document.createElement("p");
 
+if (data.status === "approved") {
+  confirmation.textContent =
+    "🎉 बधाई हो! आपकी Booking Confirm हो गई है।";
+  confirmation.style.color = "green";
+
+} else if (data.status === "rejected") {
+  confirmation.textContent =
+    "❌ आपकी Booking अस्वीकार हो गई है।";
+  confirmation.style.color = "red";
+
+} else {
+  confirmation.textContent =
+    "⏳ आपकी Booking अभी मंजूरी का इंतजार कर रही है।";
+  confirmation.style.color = "orange";
+}
+
+card.appendChild(confirmation);
       card.appendChild(details);
 
       if (data.status === "pending") {
