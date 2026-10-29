@@ -247,7 +247,34 @@ footer {
   >
 
   <br>
+<!-- FARE CALCULATOR -->
+<h3>💰 किराया कैलकुलेटर</h3>
 
+<input
+  type="number"
+  id="distanceKm"
+  placeholder="दूरी किलोमीटर में"
+  min="1"
+  step="0.1"
+>
+
+<br>
+
+<input
+  type="number"
+  id="farePerKm"
+  placeholder="प्रति KM किराया ₹"
+  min="1"
+  step="0.01"
+>
+
+<br>
+
+<button type="button" id="calculateFareBtn">
+  💰 किराया निकालें
+</button>
+
+<p id="fareResult"></p>
   <button type="button" id="searchBtn">
     🔍 Search Vehicles
   </button>
