@@ -1389,6 +1389,34 @@ totalBookings++;
   }
 
 });
+  // DARSHAN RIDES - FARE CALCULATOR
+
+document.getElementById("calculateFareBtn")
+.addEventListener("click", () => {
+
+  const distance = Number(
+    document.getElementById("distanceKm").value
+  );
+
+  const rate = Number(
+    document.getElementById("farePerKm").value
+  );
+
+  const result = document.getElementById("fareResult");
+
+  if (distance <= 0 || rate <= 0) {
+    result.textContent =
+      "❌ सही दूरी और प्रति KM किराया भरें।";
+    return;
+  }
+
+  const totalFare = distance * rate;
+
+  result.textContent =
+    "💰 अनुमानित कुल किराया: ₹" +
+    totalFare.toFixed(2);
+
+});
 </script>
 
 </body>
