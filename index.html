@@ -1255,9 +1255,76 @@ document.getElementById("ownerBookingsBtn")
           " | Status: " + (data.status || "");
 
         card.appendChild(details);
-        box.appendChild(card);
 
-        totalBookings++;
+// OWNER BOOKING ACCEPT / REJECT
+if (data.status === "pending") {
+
+  ["approved", "rejected"].forEach((decision) => {
+
+    const button = document.createElement("button");
+
+    button.textContent =
+      decision === "approved"
+        ? "✅ Accept Booking"
+        : "❌ Reject Booking";
+
+    button.addEventListener("click", async () => {
+
+      const buttons = card.querySelectorAll("button");
+
+      buttons.forEach(btn => {
+        btn.disabled = true;
+      });
+
+      try {
+
+        await updateDoc(
+          doc(db, "bookings", item.id),
+          {
+            status: decision
+          }
+        );
+
+        details.textContent =
+          "🚗 गाड़ी: " + (data.vehicleName || "") +
+          " | 📍 Pickup: " + (data.pickup || "") +
+          " | 🏁 Drop: " + (data.drop || "") +
+          " | Status: " + decision;
+
+        buttons.forEach(btn => btn.remove());
+
+        alert(
+          decision === "approved"
+            ? "✅ Booking Accept हो गई!"
+            : "❌ Booking Reject हो गई!"
+        );
+
+      } catch (error) {
+
+        console.error(error);
+
+        alert(
+          "❌ Error: " +
+          (error.code || error.message)
+        );
+
+        buttons.forEach(btn => {
+          btn.disabled = false;
+        });
+
+      }
+
+    });
+
+    card.appendChild(button);
+
+  });
+
+}
+
+box.appendChild(card);
+
+totalBookings++;
 
       });
     }
