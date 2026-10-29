@@ -710,17 +710,19 @@ if (!confirmed) {
         try {
 
           await addDoc(
-            collection(db, "bookings"),
-            {
-              customerId: user.uid,
-              vehicleId: vehicleDoc.id,
-              vehicleName:
-                vehicle.vehicleName || "गाड़ी",
-              pickup: pickup,
-              drop: drop,
-              status: "pending"
-            }
-          );
+  collection(db, "bookings"),
+  {
+    customerId: user.uid,
+    vehicleId: vehicleDoc.id,
+    vehicleName:
+      vehicle.vehicleName || "गाड़ी",
+    pickup: pickup,
+    drop: drop,
+    status: "pending",
+    distanceKm: distance,
+    totalFare: totalFare
+  }
+);  
 
           alert("✅ आपकी Booking Request जमा हो गई!");
 
