@@ -672,7 +672,38 @@ if (distanceInput && Number(distanceInput.value) > 0) {
           alert("❌ Location अधिकतम 200 अक्षरों की हो सकती है।");
           return;
         }
+// BOOKING FARE CONFIRMATION
 
+const distance = Number(
+  document.getElementById("distanceKm").value
+);
+
+const rate = Number(vehicle.pricePerKm);
+
+if (!Number.isFinite(distance) || distance <= 0) {
+  alert("❌ पहले दूरी KM में भरें।");
+  document.getElementById("distanceKm").focus();
+  return;
+}
+
+if (!Number.isFinite(rate) || rate <= 0) {
+  alert("❌ इस गाड़ी का प्रति KM किराया उपलब्ध नहीं है।");
+  return;
+}
+
+const totalFare = distance * rate;
+
+const confirmed = confirm(
+  "🚗 गाड़ी: " + (vehicle.vehicleName || "गाड़ी") +
+  "\n📍 दूरी: " + distance + " KM" +
+  "\n💰 किराया: ₹" + rate + "/KM" +
+  "\n💵 अनुमानित कुल किराया: ₹" + totalFare.toFixed(2) +
+  "\n\nक्या आप Booking करना चाहते हैं?"
+);
+
+if (!confirmed) {
+  return;
+        }
         bookBtn.disabled = true;
         bookBtn.textContent = "Booking हो रही है...";
 
