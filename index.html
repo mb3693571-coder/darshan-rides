@@ -753,7 +753,13 @@ if (!confirmed) {
     totalFare: totalFare
   }
 );  
-
+// SAVE CUSTOMER PHONE PRIVATELY
+await setDoc(
+  doc(db, "bookingContacts", bookingRef.id),
+  {
+    customerPhone: customerPhone
+  }
+);
           alert("✅ आपकी Booking Request जमा हो गई!");
 
         } catch (error) {
