@@ -1582,7 +1582,7 @@ if (data.status === "approved") {
       callBtn.style.textDecoration = "none";
 
       card.appendChild(callBtn);
-
+callBtn.style.setProperty("display", "inline-block", "important");
     })
     .catch((error) => {
       console.error(error);
