@@ -1157,8 +1157,12 @@ if (data.status === "approved") {
     });
 
   }
+
+  }); // snapshot.forEach समाप्त
+
   } catch (error) {
-    box.textContent = "❌ Error: " + (error.code || error.message);
+    box.textContent =
+      "❌ Error: " + (error.code || error.message);
   }
 });
 
