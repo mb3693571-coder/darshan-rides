@@ -1141,12 +1141,29 @@ if (data.status === "approved") {
       const ownerPhone = contactSnap.data().ownerPhone;
 
       if (/^[6-9][0-9]{9}$/.test(ownerPhone || "")) {
-        phoneInfo.textContent =
-          "📞 गाड़ी मालिक का मोबाइल नंबर: " + ownerPhone;
-      } else {
-        phoneInfo.textContent =
-          "📞 मालिक का नंबर उपलब्ध नहीं है।";
-      }
+       phoneInfo.textContent =
+  "📞 गाड़ी मालिक का मोबाइल नंबर: " + ownerPhone;
+
+// CUSTOMER CALL OWNER BUTTON
+const callBtn = document.createElement("a");
+
+callBtn.href = "tel:+91" + ownerPhone;
+callBtn.textContent = "📞 Call Now";
+
+callBtn.style.padding = "12px 18px";
+callBtn.style.background = "#ff8c00";
+callBtn.style.color = "white";
+callBtn.style.borderRadius = "8px";
+callBtn.style.textDecoration = "none";
+callBtn.style.margin = "10px";
+callBtn.style.setProperty("display", "inline-block", "important");
+
+card.appendChild(callBtn);
+
+} else {
+  phoneInfo.textContent =
+    "📞 मालिक का नंबर उपलब्ध नहीं है।";
+      } 
 
     })
     .catch((error) => {
