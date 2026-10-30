@@ -784,6 +784,19 @@ const demoPay = confirm(
 );
 
 if (demoPay) {
+  // SAVE DEMO PAYMENT RECORD
+await setDoc(
+  doc(db, "demoPayments", bookingRef.id),
+  {
+    bookingId: bookingRef.id,
+    customerId: user.uid,
+    totalFare: totalFare,
+    advanceAmount: totalFare * 15 / 100,
+    remainingAmount: totalFare - (totalFare * 15 / 100),
+    paymentMode: "demo",
+    paymentStatus: "demo_success"
+  }
+);
   alert(
     "✅ Demo Payment Successful!\n\n" +
     "💳 Demo Advance: ₹" + advanceAmount.toFixed(2) +
