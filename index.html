@@ -1453,7 +1453,76 @@ document.getElementById("ownerBookingsBtn")
     const vehicleIds = new Set(
       vehicleSnapshot.docs.map(item => item.id)
     );
+// OWNER VEHICLE AVAILABILITY CONTROL
+const availabilityTitle = document.createElement("h3");
+availabilityTitle.textContent = "🚗 मेरी गाड़ियों की उपलब्धता";
+box.appendChild(availabilityTitle);
 
+vehicleSnapshot.docs.forEach((vehicleDoc) => {
+
+  const vehicle = vehicleDoc.data();
+
+  const row = document.createElement("div");
+  row.className = "vehicle-card";
+
+  const name = document.createElement("p");
+  name.textContent =
+    "🚗 " + (vehicle.vehicleName || "गाड़ी");
+
+  const button = document.createElement("button");
+
+  function refreshButton(available) {
+    button.textContent = available
+      ? "🟢 Available — बंद करें"
+      : "🔴 Unavailable — चालू करें";
+
+    button.style.background =
+      available ? "#228b22" : "#cc3333";
+  }
+
+  let available = vehicle.available !== false;
+
+  refreshButton(available);
+
+  button.addEventListener("click", async () => {
+
+    button.disabled = true;
+
+    try {
+
+      const newValue = !available;
+
+      await updateDoc(
+        doc(db, "vehicles", vehicleDoc.id),
+        { available: newValue }
+      );
+
+      available = newValue;
+      refreshButton(available);
+
+      alert(
+        available
+          ? "✅ गाड़ी Available हो गई!"
+          : "🚫 गाड़ी Unavailable हो गई!"
+      );
+
+    } catch (error) {
+
+      alert(
+        "❌ Error: " +
+        (error.code || error.message)
+      );
+
+    } finally {
+      button.disabled = false;
+    }
+
+  });
+
+  row.append(name, button);
+  box.appendChild(row);
+
+});
     // हर गाड़ी की Booking अलग से खोजें
     let totalBookings = 0;
 
