@@ -766,7 +766,36 @@ await setDoc(
   }
 );
           alert("✅ आपकी Booking Request जमा हो गई!");
+// DEMO PAYMENT - 15% ADVANCE
+const advanceAmount =
+  Math.round(totalFare * 0.15 * 100) / 100;
 
+const remainingAmount =
+  Math.round((totalFare - advanceAmount) * 100) / 100;
+
+const demoPay = confirm(
+  "💳 DARSHAN RIDES - DEMO PAYMENT\n\n" +
+  "🚗 गाड़ी: " + (vehicle.vehicleName || "गाड़ी") +
+  "\n💰 कुल किराया: ₹" + totalFare.toFixed(2) +
+  "\n💳 15% Advance: ₹" + advanceAmount.toFixed(2) +
+  "\n🚗 मालिक को 85%: ₹" + remainingAmount.toFixed(2) +
+  "\n\n🧪 यह केवल Demo है। असली पैसे नहीं कटेंगे।" +
+  "\n\nOK दबाकर Demo Payment देखें।"
+);
+
+if (demoPay) {
+  alert(
+    "✅ Demo Payment Successful!\n\n" +
+    "💳 Demo Advance: ₹" + advanceAmount.toFixed(2) +
+    "\n⚠️ यह असली भुगतान नहीं है।" +
+    "\n📅 आपकी Booking Request जमा हो गई!"
+  );
+} else {
+  alert(
+    "✅ आपकी Booking Request जमा हो गई!\n" +
+    "💳 Demo Payment नहीं किया गया।"
+  );
+      }
         } catch (error) {
 
           console.error(error);
