@@ -1547,7 +1547,51 @@ if (data.status === "pending") {
 box.appendChild(card);
 
 totalBookings++;
+// APPROVED BOOKING - CUSTOMER PHONE AND CALL BUTTON
+if (data.status === "approved") {
 
+  const phoneInfo = document.createElement("p");
+  phoneInfo.textContent = "📞 ग्राहक का नंबर लोड हो रहा है...";
+  card.appendChild(phoneInfo);
+
+  getDoc(doc(db, "bookingContacts", item.id))
+    .then((contactSnap) => {
+
+      const customerPhone = contactSnap.exists()
+        ? contactSnap.data().customerPhone
+        : null;
+
+      if (!/^[6-9][0-9]{9}$/.test(customerPhone || "")) {
+        phoneInfo.textContent =
+          "📞 ग्राहक का मोबाइल नंबर उपलब्ध नहीं है।";
+        return;
+      }
+
+      phoneInfo.textContent =
+        "📞 ग्राहक का मोबाइल नंबर: " + customerPhone;
+
+      const callBtn = document.createElement("a");
+      callBtn.href = "tel:+91" + customerPhone;
+      callBtn.textContent = "📞 Call Now";
+
+      callBtn.style.display = "inline-block";
+      callBtn.style.padding = "12px 18px";
+      callBtn.style.background = "#ff8c00";
+      callBtn.style.color = "white";
+      callBtn.style.borderRadius = "8px";
+      callBtn.style.textDecoration = "none";
+
+      card.appendChild(callBtn);
+
+    })
+    .catch((error) => {
+      console.error(error);
+      phoneInfo.textContent =
+        "❌ नंबर नहीं दिख सका: " +
+        (error.code || error.message);
+    });
+
+          }
       });
     }
 
