@@ -1209,8 +1209,8 @@ card.appendChild(confirmation);
 if (decision === "approved") {
 
   const ownerRequestSnap = await getDoc(
-    doc(db, "vehicleRequests", vehicleId)
-  );
+  doc(db, "vehicleRequests", data.vehicleId)
+);
 
   if (!ownerRequestSnap.exists()) {
     throw new Error("Owner record not found");
