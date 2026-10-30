@@ -653,7 +653,11 @@ async function loadVehicles(searchCity = "") {
 
       const bookBtn = document.createElement("button");
       bookBtn.textContent = "📅 Book Now";
-
+// VEHICLE AVAILABILITY
+if (vehicle.available === false) {
+  bookBtn.textContent = "🚫 Unavailable";
+  bookBtn.disabled = true;
+}
       bookBtn.addEventListener("click", async () => {
 // AUTO FARE PER KM
 const rateInput = document.getElementById("farePerKm");
