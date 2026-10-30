@@ -1036,9 +1036,26 @@ if (decision === "approved") {
   const ownerRequestSnap = await getDoc(ownerRequestRef);
 
   if (ownerRequestSnap.exists()) {
-    console.log("✅ Owner record found");
+
+  const ownerPhone = ownerRequestSnap.data().ownerPhone;
+
+  if (/^[6-9][0-9]{9}$/.test(ownerPhone)) {
+
+    await updateDoc(
+      doc(db, "bookingContacts", item.id),
+      {
+        ownerPhone: ownerPhone
+      }
+    );
+
+    console.log("✅ Owner phone saved securely");
+
   } else {
-    console.log("❌ Owner record not found");
+    console.log("❌ Owner phone invalid");
+  }
+
+} else {
+  console.log("❌ Owner record not found");
   }
 
 }
