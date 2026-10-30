@@ -1453,6 +1453,51 @@ document.getElementById("ownerBookingsBtn")
     const vehicleIds = new Set(
       vehicleSnapshot.docs.map(item => item.id)
     );
+    // OWNER VEHICLE AVAILABILITY
+vehicleSnapshot.docs.forEach((vehicleDoc) => {
+  const vehicle = vehicleDoc.data();
+
+  const row = document.createElement("div");
+
+  const name = document.createElement("p");
+  name.textContent = "🚗 " + (vehicle.vehicleName || "गाड़ी");
+
+  const button = document.createElement("button");
+
+  function showStatus() {
+    button.textContent = vehicle.available === false
+      ? "🔴 Unavailable — चालू करें"
+      : "🟢 Available — बंद करें";
+  }
+
+  showStatus();
+
+  button.onclick = async () => {
+    button.disabled = true;
+
+    try {
+      const newStatus = vehicle.available === false;
+
+      await updateDoc(
+        doc(db, "vehicles", vehicleDoc.id),
+        { available: newStatus }
+      );
+
+      vehicle.available = newStatus;
+      showStatus();
+
+      alert("✅ गाड़ी की Availability बदल गई!");
+
+    } catch (error) {
+      alert("❌ " + error.message);
+    } finally {
+      button.disabled = false;
+    }
+  };
+
+  row.append(name, button);
+  box.appendChild(row);
+});
 // OWNER VEHICLE AVAILABILITY CONTROL
 const availabilityTitle = document.createElement("h3");
 availabilityTitle.textContent = "🚗 मेरी गाड़ियों की उपलब्धता";
