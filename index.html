@@ -1024,7 +1024,24 @@ document.getElementById("loadRequestsBtn")
                   status: decision
                 }
               );
+// APPROVED BOOKING - OWNER PHONE CHECK
+if (decision === "approved") {
 
+  const ownerRequestRef = doc(
+    db,
+    "vehicleRequests",
+    vehicleId
+  );
+
+  const ownerRequestSnap = await getDoc(ownerRequestRef);
+
+  if (ownerRequestSnap.exists()) {
+    console.log("✅ Owner record found");
+  } else {
+    console.log("❌ Owner record not found");
+  }
+
+}
               details.textContent +=
                 " | नया Status: " + decision;
 
