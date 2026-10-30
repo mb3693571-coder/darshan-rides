@@ -1205,7 +1205,32 @@ card.appendChild(confirmation);
                 doc(db, "bookings", item.id),
                 { status: decision }
               );
+// SAVE OWNER PHONE AFTER BOOKING APPROVAL
+if (decision === "approved") {
 
+  const ownerRequestSnap = await getDoc(
+    doc(db, "vehicleRequests", vehicleId)
+  );
+
+  if (!ownerRequestSnap.exists()) {
+    throw new Error("Owner record not found");
+  }
+
+  const ownerPhone = ownerRequestSnap.data().ownerPhone;
+
+  if (!/^[6-9][0-9]{9}$/.test(ownerPhone)) {
+    throw new Error("Owner phone invalid");
+  }
+
+  await updateDoc(
+    doc(db, "bookingContacts", item.id),
+    {
+      ownerPhone: ownerPhone
+    }
+  );
+
+  console.log("✅ Owner phone saved securely");
+  }
               details.textContent += " | नया Status: " + decision;
 
               card.querySelectorAll("button")
