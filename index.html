@@ -1404,6 +1404,25 @@ document.getElementById("adminPaymentsBtn")
     let totalRemaining = 0;
 let totalFareSum = 0;
 let totalPayments = 0;
+    // DAILY AND MONTHLY DEMO REPORT
+let todayPayments = 0;
+let todayCommission = 0;
+
+let monthPayments = 0;
+let monthCommission = 0;
+
+const now = new Date();
+
+const todayKey = [
+  now.getFullYear(),
+  now.getMonth(),
+  now.getDate()
+].join("-");
+
+const monthKey = [
+  now.getFullYear(),
+  now.getMonth()
+].join("-");
     snapshot.forEach(item => {
 
       const data = item.data();
