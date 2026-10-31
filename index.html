@@ -1510,6 +1510,38 @@ commissionDashboard.innerHTML = `
 `;
 
 box.prepend(commissionDashboard);
+    // DAILY AND MONTHLY DEMO COMMISSION REPORT
+const reportBox = document.createElement("div");
+
+reportBox.className = "vehicle-card";
+
+const reportTitle = document.createElement("h3");
+reportTitle.textContent = "📅 Daily / Monthly Demo Report";
+
+const dailyReport = document.createElement("p");
+dailyReport.textContent =
+  "📅 आज के Demo Payments: " + todayPayments +
+  " | 💳 आज का 15% Commission: ₹" +
+  todayCommission.toFixed(2);
+
+const monthlyReport = document.createElement("p");
+monthlyReport.textContent =
+  "📆 इस महीने के Demo Payments: " + monthPayments +
+  " | 💰 इस महीने का 15% Commission: ₹" +
+  monthCommission.toFixed(2);
+
+const reportWarning = document.createElement("p");
+reportWarning.textContent =
+  "⚠️ यह केवल Demo Report है, वास्तविक कमाई नहीं।";
+
+reportBox.append(
+  reportTitle,
+  dailyReport,
+  monthlyReport,
+  reportWarning
+);
+
+box.prepend(reportBox);
     const warning = document.createElement("p");
     warning.textContent =
       "⚠️ ये केवल Demo रिकॉर्ड हैं। वास्तविक भुगतान प्राप्त नहीं हुआ है।";
