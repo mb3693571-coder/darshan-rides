@@ -1438,6 +1438,32 @@ const monthKey = [
       totalRemaining += remaining;
 totalFareSum += total;
 totalPayments++;
+      // DAILY AND MONTHLY COMMISSION CALCULATION
+if (data.createdAt && typeof data.createdAt.toDate === "function") {
+
+  const paymentDate = data.createdAt.toDate();
+
+  const paymentTodayKey = [
+    paymentDate.getFullYear(),
+    paymentDate.getMonth(),
+    paymentDate.getDate()
+  ].join("-");
+
+  const paymentMonthKey = [
+    paymentDate.getFullYear(),
+    paymentDate.getMonth()
+  ].join("-");
+
+  if (paymentTodayKey === todayKey) {
+    todayPayments++;
+    todayCommission += advance;
+  }
+
+  if (paymentMonthKey === monthKey) {
+    monthPayments++;
+    monthCommission += advance;
+  }
+}
       const card = document.createElement("div");
       card.className = "vehicle-card";
 
