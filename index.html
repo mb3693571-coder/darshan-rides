@@ -1370,9 +1370,100 @@ if (decision === "approved") {
     box.textContent = "❌ Error: " + (error.code || error.message);
   }
 });
+});
+
+// ADMIN DEMO PAYMENTS DASHBOARD
+document.getElementById("adminPaymentsBtn")
+.addEventListener("click", async () => {
+
+  const box = document.getElementById("adminPaymentsList");
+  const user = auth.currentUser;
+
+  if (!user || user.uid !== ADMIN_UID) {
+    box.textContent = "❌ केवल Admin देख सकता है।";
+    return;
+  }
+
+  box.textContent = "💳 Demo Payments लोड हो रहे हैं...";
+
+  try {
+
+    const snapshot = await getDocs(
+      collection(db, "demoPayments")
+    );
+
+    box.replaceChildren();
+
+    if (snapshot.empty) {
+      box.textContent = "अभी कोई Demo Payment नहीं है।";
+      return;
+    }
+
+    let totalAdvance = 0;
+    let totalRemaining = 0;
+
+    snapshot.forEach(item => {
+
+      const data = item.data();
+
+      // केवल वैध Demo रिकॉर्ड का हिसाब
+      if (data.paymentMode !== "demo") return;
+
+      const total = Number(data.totalFare || 0);
+      const advance = Number(data.advanceAmount || 0);
+      const remaining = Number(data.remainingAmount || 0);
+
+      totalAdvance += advance;
+      totalRemaining += remaining;
+
+      const card = document.createElement("div");
+      card.className = "vehicle-card";
+
+      const details = document.createElement("p");
+
+      details.textContent =
+        "📋 Booking ID: " + (data.bookingId || "") +
+        " | 💰 कुल किराया: ₹" + total.toFixed(2) +
+        " | 💳 Demo Advance 15%: ₹" + advance.toFixed(2) +
+        " | 🚗 मालिक का हिस्सा 85%: ₹" + remaining.toFixed(2) +
+        " | 🧪 Status: " + (data.paymentStatus || "");
+
+      card.appendChild(details);
+      box.appendChild(card);
+
+    });
+
+    const summary = document.createElement("h3");
+
+    summary.textContent =
+      "🧪 कुल Demo Advance: ₹" +
+      totalAdvance.toFixed(2) +
+      " | मालिकों का Demo हिस्सा: ₹" +
+      totalRemaining.toFixed(2);
+
+    box.prepend(summary);
+
+    const warning = document.createElement("p");
+    warning.textContent =
+      "⚠️ ये केवल Demo रिकॉर्ड हैं। वास्तविक भुगतान प्राप्त नहीं हुआ है।";
+
+    box.prepend(warning);
+
+  } catch (error) {
+
+    console.error(error);
+
+    box.textContent =
+      "❌ Error: " + (error.code || error.message);
+
+  }
+
+});
+
 // START
 
 loadVehicles();
+
 // MOBILE OTP LOGIN
 
 let confirmationResult = null;
