@@ -1916,7 +1916,10 @@ vehicleSnapshot.docs.forEach((vehicleDoc) => {
 
 });
     // हर गाड़ी की Booking अलग से खोजें
-    let totalBookings = 0;
+let totalBookings = 0;
+
+// 🔔 नई Pending Bookings की गिनती
+let pendingBookings = 0;
 
     for (const vehicleId of vehicleIds) {
 
