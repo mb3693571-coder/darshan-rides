@@ -2082,7 +2082,19 @@ callBtn.style.setProperty("display", "inline-block", "important");
           }
       });
     }
+// 🔔 OWNER PENDING BOOKING NOTIFICATION
+const notification = document.createElement("div");
 
+notification.className = "vehicle-card";
+
+notification.style.background = "#fff3cd";
+notification.style.border = "2px solid orange";
+
+notification.textContent = pendingBookings > 0
+  ? "🔔 आपके पास " + pendingBookings + " Pending Bookings हैं!"
+  : "✅ अभी कोई Pending Booking नहीं है।";
+
+box.prepend(notification);
     if (totalBookings === 0) {
       box.textContent = "अभी आपकी गाड़ियों की कोई Booking नहीं है।";
     }
