@@ -1933,7 +1933,10 @@ let pendingBookings = 0;
       bookingSnapshot.forEach(item => {
 
         const data = item.data();
-
+// 🔔 Pending Booking की गिनती
+if (data.status === "pending") {
+  pendingBookings++;
+}
         const card = document.createElement("div");
         card.className = "vehicle-card";
 
