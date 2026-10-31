@@ -1580,7 +1580,9 @@ async function downloadDemoReport(period) {
     const rows = [
       ["Booking ID", "Date", "Total Fare", "Demo Commission 15%", "Owner Share 85%", "Status"]
     ];
-
+let reportTotalFare = 0;
+let reportTotalCommission = 0;
+let reportTotalOwnerShare = 0;
     snapshot.forEach(item => {
       const data = item.data();
 
