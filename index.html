@@ -1564,7 +1564,89 @@ box.prepend(reportBox);
   }
 
 });
+// DEMO PAYMENT CSV DOWNLOAD
+async function downloadDemoReport(period) {
+  const user = auth.currentUser;
 
+  if (!user || user.uid !== ADMIN_UID) {
+    alert("❌ केवल Admin रिपोर्ट डाउनलोड कर सकता है।");
+    return;
+  }
+
+  try {
+    const snapshot = await getDocs(collection(db, "demoPayments"));
+    const now = new Date();
+
+    const rows = [
+      ["Booking ID", "Date", "Total Fare", "Demo Commission 15%", "Owner Share 85%", "Status"]
+    ];
+
+    snapshot.forEach(item => {
+      const data = item.data();
+
+      if (
+        data.paymentMode !== "demo" ||
+        !data.createdAt ||
+        typeof data.createdAt.toDate !== "function"
+      ) return;
+
+      const date = data.createdAt.toDate();
+
+      if (period === "daily" &&
+          date.toDateString() !== now.toDateString()) return;
+
+      if (period === "monthly" &&
+          (date.getFullYear() !== now.getFullYear() ||
+           date.getMonth() !== now.getMonth())) return;
+
+      rows.push([
+        data.bookingId || item.id,
+        date.toLocaleString("en-IN"),
+        Number(data.totalFare || 0).toFixed(2),
+        Number(data.advanceAmount || 0).toFixed(2),
+        Number(data.remainingAmount || 0).toFixed(2),
+        data.paymentStatus || ""
+      ]);
+    });
+
+    if (rows.length === 1) {
+      alert("इस अवधि में कोई तारीख वाला Demo Payment नहीं मिला।");
+      return;
+    }
+
+    const csv = rows.map(row =>
+      row.map(value =>
+        '"' + String(value).replace(/"/g, '""') + '"'
+      ).join(",")
+    ).join("\r\n");
+
+    const blob = new Blob(["\uFEFF" + csv], {
+      type: "text/csv;charset=utf-8;"
+    });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = `darshan-rides-demo-${period}.csv`;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    URL.revokeObjectURL(url);
+
+  } catch (error) {
+    console.error(error);
+    alert("❌ Report Error: " + (error.code || error.message));
+  }
+}
+
+document.getElementById("downloadDailyReportBtn")
+  .addEventListener("click", () => downloadDemoReport("daily"));
+
+document.getElementById("downloadMonthlyReportBtn")
+  .addEventListener("click", () => downloadDemoReport("monthly"));
 // START
 
 loadVehicles();
