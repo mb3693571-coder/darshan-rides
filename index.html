@@ -1600,7 +1600,9 @@ let reportTotalOwnerShare = 0;
       if (period === "monthly" &&
           (date.getFullYear() !== now.getFullYear() ||
            date.getMonth() !== now.getMonth())) return;
-
+reportTotalFare += Number(data.totalFare || 0);
+reportTotalCommission += Number(data.advanceAmount || 0);
+reportTotalOwnerShare += Number(data.remainingAmount || 0);
       rows.push([
         data.bookingId || item.id,
         date.toLocaleString("en-IN"),
