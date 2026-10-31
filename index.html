@@ -1617,7 +1617,14 @@ reportTotalOwnerShare += Number(data.remainingAmount || 0);
       alert("इस अवधि में कोई तारीख वाला Demo Payment नहीं मिला।");
       return;
     }
-
+rows.push([
+  "TOTAL",
+  "",
+  reportTotalFare.toFixed(2),
+  reportTotalCommission.toFixed(2),
+  reportTotalOwnerShare.toFixed(2),
+  "DEMO ONLY"
+]);
     const csv = rows.map(row =>
       row.map(value =>
         '"' + String(value).replace(/"/g, '""') + '"'
