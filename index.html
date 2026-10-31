@@ -811,7 +811,8 @@ await setDoc(
     advanceAmount: totalFare * 15 / 100,
     remainingAmount: totalFare - (totalFare * 15 / 100),
     paymentMode: "demo",
-    paymentStatus: "demo_success"
+paymentStatus: "demo_success",
+createdAt: serverTimestamp()
   }
 );
   alert(
