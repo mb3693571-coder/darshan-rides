@@ -1400,7 +1400,8 @@ document.getElementById("adminPaymentsBtn")
 
     let totalAdvance = 0;
     let totalRemaining = 0;
-
+let totalFareSum = 0;
+let totalPayments = 0;
     snapshot.forEach(item => {
 
       const data = item.data();
@@ -1414,7 +1415,8 @@ document.getElementById("adminPaymentsBtn")
 
       totalAdvance += advance;
       totalRemaining += remaining;
-
+totalFareSum += total;
+totalPayments++;
       const card = document.createElement("div");
       card.className = "vehicle-card";
 
@@ -1441,7 +1443,26 @@ document.getElementById("adminPaymentsBtn")
       totalRemaining.toFixed(2);
 
     box.prepend(summary);
+// ADMIN COMMISSION SUMMARY
+const commissionDashboard = document.createElement("div");
 
+commissionDashboard.className = "vehicle-card";
+
+commissionDashboard.innerHTML = `
+  <h3>📊 Darshan Rides Commission Dashboard</h3>
+
+  <p>🚗 कुल Demo Payments: ${totalPayments}</p>
+
+  <p>💰 कुल किराया: ₹${totalFareSum.toFixed(2)}</p>
+
+  <p>💳 15% Demo Commission: ₹${totalAdvance.toFixed(2)}</p>
+
+  <p>🚕 मालिकों का 85% हिस्सा: ₹${totalRemaining.toFixed(2)}</p>
+
+  <p>⚠️ यह वास्तविक कमाई नहीं है।</p>
+`;
+
+box.prepend(commissionDashboard);
     const warning = document.createElement("p");
     warning.textContent =
       "⚠️ ये केवल Demo रिकॉर्ड हैं। वास्तविक भुगतान प्राप्त नहीं हुआ है।";
